@@ -29,100 +29,53 @@ public class Range {
         return to - from;
     }
 
-    public boolean isExactlyInside(double point) {
+    public boolean isInside(double point) {
         return point >= from && point <= to;
     }
 
-    public boolean isInside(double point) {
-        return point > from && point < to;
+    public String toString() {
+        return String.format("(%.2f; %.2f)", from, to);
     }
 
-    public void println() {
-        System.out.printf("(%.2f;%.2f)%n", from, to);
-    }
+    public Range getIntersection(Range range) {
+        double intersectionFrom = Math.max(from, range.from);
+        double intersectionTo = Math.min(to, range.to);
 
-    public void println(Range[] arrayRange) {
-        for (int i = 0; i < arrayRange.length; i++) {
-            System.out.printf("(%.2f;%.2f)%n", arrayRange[i].from, arrayRange[i].to);
+        if (intersectionFrom < intersectionTo) {
+            return new Range(intersectionFrom, intersectionTo);
         }
+        return null;
     }
 
-    public Range getIntersection(Range range2) {
-        if (isInside(range2.getFrom())) {
-            if (isInside(range2.getTo())) {
-                return new Range(range2.getFrom(), range2.getTo());
-            } else {
-                return new Range(range2.getFrom(), this.to);
-            }
-        } else if (range2.isInside(this.from)) {
-            if (range2.isInside(this.to)) {
-                return new Range(this.from, this.to);
-            } else {
-                return new Range(this.from, range2.getTo());
-            }
-        } else {
-            return null;
+    public Range[] getUnion(Range range) {
+        double intersectionFrom = Math.max(from, range.from);
+        double intersectionTo = Math.min(to, range.to);
+
+        if (intersectionFrom > intersectionTo) {
+            return new Range[]{new Range(from, to), new Range(range.from, range.to)};
         }
+        return new Range[]{new Range(Math.min(from, range.from), Math.max(to, range.to))};
     }
 
-    public Range[] getUnion(Range range2) {
-        if (isExactlyInside(range2.getFrom())) {
-            if (isExactlyInside(range2.getTo())) {
-                Range[] arrayRange = new Range[1];
-                arrayRange[0] = new Range(this.from, this.to);
-                return arrayRange;
-            } else {
-                Range[] arrayRange = new Range[1];
-                arrayRange[0] = new Range(this.from, range2.getTo());
-                return arrayRange;
-            }
-        } else if (range2.isExactlyInside(this.from)) {
-            if (range2.isExactlyInside(this.to)) {
-                Range[] arrayRange = new Range[1];
-                arrayRange[0] = new Range(range2.getFrom(), range2.getTo());
-                return arrayRange;
-            } else {
-                Range[] arrayRange = new Range[1];
-                arrayRange[0] = new Range(range2.getFrom(), this.to);
-                return arrayRange;
-            }
-        } else {
-            Range[] arrayRange = new Range[2];
-            arrayRange[0] = new Range(this.from, this.to);
-            arrayRange[1] = range2;
-            return arrayRange;
-        }
-    }
+    public Range[] getDifference(Range range) {
+        double intersectionFrom = Math.max(from, range.from);
+        double intersectionTo = Math.min(to, range.to);
 
-    public Range[] getSubtraction(Range range2) {
-        if (isInside(range2.getFrom())) {
-            if (isInside(range2.getTo())) {
-                Range[] arrayRange = new Range[2];
-                arrayRange[0] = new Range(this.from, range2.getFrom());
-                arrayRange[1] = new Range(range2.getTo(), this.to);
-                return arrayRange;
-            } else {
-                Range[] arrayRange = new Range[1];
-                arrayRange[0] = new Range(this.from, range2.getFrom());
-                return arrayRange;
-            }
-        } else if (range2.isInside(this.from)) {
-            if (range2.isInside(this.to)) {
-                return null;
-            } else {
-                Range[] arrayRange = new Range[1];
-                arrayRange[0] = new Range(range2.getTo(), this.to);
-                return arrayRange;
-            }
-        } else {
-            Range[] arrayRange = new Range[1];
-            arrayRange[0] = new Range(this.from, this.to);
-            return arrayRange;
+        if (intersectionFrom >= intersectionTo) {
+            return new Range[]{new Range(from, to)};
         }
+
+        if (intersectionFrom == from) {
+            if (intersectionTo == to) {
+                return new Range[0];
+            }
+            return new Range[]{new Range(intersectionTo, to)};
+        }
+
+        if (intersectionTo == to) {
+            return new Range[]{new Range(from, intersectionFrom)};
+            }
+
+        return new Range[]{new Range(from, intersectionFrom), new Range(intersectionTo, to)};
     }
 }
-
-
-
-
-

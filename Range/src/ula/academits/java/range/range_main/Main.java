@@ -5,27 +5,28 @@ import ula.academits.java.range.range.Range;
 import java.util.Scanner;
 
 public class Main {
-
-    public static String toString(Range[] rangesArray) {
+        public static String toString(Range[] rangesArray) {
         StringBuilder result = new StringBuilder();
         result.append("[");
+
         for (Range e : rangesArray) {
-            result.append(e.toString());
+            result.append(e);
         }
+
         result.append("]");
-        return result.toString().replace(")(", "),(");
+        return result.toString().replace(")(", "), (");
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Введите начало диапазона: ");
-        double from = scanner.nextDouble();
+        double from1 = scanner.nextDouble();
 
         System.out.println("Введите конец диапазона: ");
-        double to = scanner.nextDouble();
+        double to1 = scanner.nextDouble();
 
-        Range userRange1 = new Range(from, to);
+        Range userRange1 = new Range(from1, to1);
         double rangeLength = userRange1.getLength();
 
         if (rangeLength < 0) {
@@ -41,7 +42,8 @@ public class Main {
         } else {
             System.out.print("Число не принадлежит диапазону");
         }
-        System.out.println(userRange1.toString());
+
+        System.out.println(userRange1);
 
         System.out.println("Введите начало второго диапазона: ");
         double from2 = scanner.nextDouble();
@@ -57,7 +59,7 @@ public class Main {
             System.out.println("Пересечения нет.");
         } else {
             System.out.print("Диапазон пересечения: ");
-            System.out.println(intersection.toString());
+            System.out.println(intersection);
         }
 
         Range[] union = userRange1.getUnion(userRange2);

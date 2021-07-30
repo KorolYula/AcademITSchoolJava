@@ -33,6 +33,7 @@ public class Range {
         return point >= from && point <= to;
     }
 
+    @Override
     public String toString() {
         return String.format("(%.2f; %.2f)", from, to);
     }
@@ -44,6 +45,7 @@ public class Range {
         if (intersectionFrom < intersectionTo) {
             return new Range(intersectionFrom, intersectionTo);
         }
+
         return null;
     }
 
@@ -54,6 +56,7 @@ public class Range {
         if (intersectionFrom > intersectionTo) {
             return new Range[]{new Range(from, to), new Range(range.from, range.to)};
         }
+
         return new Range[]{new Range(Math.min(from, range.from), Math.max(to, range.to))};
     }
 
@@ -69,6 +72,7 @@ public class Range {
             if (intersectionTo == to) {
                 return new Range[0];
             }
+
             return new Range[]{new Range(intersectionTo, to)};
         }
 

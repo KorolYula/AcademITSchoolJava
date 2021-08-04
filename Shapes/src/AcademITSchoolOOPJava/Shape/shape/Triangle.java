@@ -1,6 +1,6 @@
 package AcademITSchoolOOPJava.Shape.shape;
 
-public class Triangle implements Shape {
+public class Triangle implements Shape ,Comparable<Triangle>{
     private double x1;
     private double x2;
     private double x3;
@@ -35,6 +35,16 @@ public class Triangle implements Shape {
         double side2 = Math.sqrt((x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3));
         double side3 = Math.sqrt((x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1));
         return side1 + side2 + side3;
+    }
+    @Override
+    public int compareTo(Triangle triangle) {
+        if (getArea() == triangle.getArea()) {
+            return 0;
+        }
+        if (getArea() > triangle.getArea()) {
+            return 1;
+        }
+        return -1;
     }
 }
 

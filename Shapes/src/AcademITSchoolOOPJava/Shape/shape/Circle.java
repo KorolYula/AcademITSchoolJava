@@ -1,6 +1,6 @@
 package AcademITSchoolOOPJava.Shape.shape;
 
-public class Circle implements Shape {
+public class Circle implements Shape, Comparable<Circle> {
     private double radius;
 
     public Circle(double radius) {
@@ -21,5 +21,16 @@ public class Circle implements Shape {
 
     public double getPerimeter() {
         return 2 * radius * Math.PI;
+    }
+
+    @Override
+    public int compareTo(Circle circle) {
+        if (getArea() == circle.getArea()) {
+            return 0;
+        }
+        if (getArea() > circle.getArea()) {
+            return 1;
+        }
+        return -1;
     }
 }

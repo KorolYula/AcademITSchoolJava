@@ -27,7 +27,7 @@ public class Triangle implements Shape ,Comparable<Triangle>{
     }
 
     public double getArea() {
-        return 0.5 * ((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
+        return 0.5 *Math.abs ((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
     }
 
     public double getPerimeter() {
@@ -36,7 +36,7 @@ public class Triangle implements Shape ,Comparable<Triangle>{
         double side3 = Math.sqrt((x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1));
         return side1 + side2 + side3;
     }
-    @Override
+  @Override
     public int compareTo(Triangle triangle) {
         if (getArea() == triangle.getArea()) {
             return 0;
@@ -45,6 +45,10 @@ public class Triangle implements Shape ,Comparable<Triangle>{
             return 1;
         }
         return -1;
+    }
+    @Override
+    public String toString() {
+        return String.format("Треугольник с координатами углов (%.2f; %.2f),(%.2f; %.2f),(%.2f; %.2f)", x1, y1,x2,y2,x3,y3);
     }
 }
 

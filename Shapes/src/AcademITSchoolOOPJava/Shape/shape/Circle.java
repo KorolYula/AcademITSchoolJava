@@ -33,4 +33,8 @@ public class Circle implements Shape, Comparable<Circle> {
         }
         return -1;
     }
+    @Override
+    public String toString() {
+        return String.format("Круг с радиусом %.2f", radius);
+    }
 }

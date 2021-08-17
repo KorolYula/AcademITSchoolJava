@@ -1,6 +1,6 @@
 package AcademITSchoolOOPJava.Shape.shape;
 
-public class Circle implements Shape, Comparable<Circle> {
+public class Circle implements Shape {
     private double radius;
 
     public Circle(double radius) {
@@ -23,16 +23,6 @@ public class Circle implements Shape, Comparable<Circle> {
         return 2 * radius * Math.PI;
     }
 
-    @Override
-    public int compareTo(Circle circle) {
-        if (getArea() == circle.getArea()) {
-            return 0;
-        }
-        if (getArea() > circle.getArea()) {
-            return 1;
-        }
-        return -1;
-    }
     @Override
     public String toString() {
         return String.format("Круг с радиусом %.2f", radius);

@@ -13,8 +13,8 @@ public class Vector {
         return this.components[i];
     }
 
-    public void setComponent(int i,double number) {
-        this.components[i]=number;
+    public void setComponent(int i, double number) {
+        this.components[i] = number;
     }
 
     public Vector(int n) {
@@ -30,7 +30,7 @@ public class Vector {
     }
 
     public Vector(Vector vector) {
-        double[] components = new double[vector.getSize()];
+        this.components = new double[vector.getSize()];
 
         for (int i = 0; i < vector.getSize(); i++) {
             this.components[i] = vector.components[i];
@@ -61,17 +61,22 @@ public class Vector {
         }
     }
 
-    public void addAnotherVector(Vector vector) {
-        if (vector.getSize() < this.getSize()) {
-            for (int i = vector.getSize(); i < this.getSize(); i++) {
-                vector.components[i] = 0;
-            }
+    private void resize(int n) {
+        double[] old = this.components;
+        this.components = new double[n];
+
+        for (int i = 0; i < old.length; i++) {
+            this.components[i] = old[i];
         }
 
+        for (int i = old.length; i < n; i++) {
+            this.components[i] = 0;
+        }
+    }
+
+    public void add(Vector vector) {
         if (vector.getSize() > this.getSize()) {
-            for (int i = this.getSize(); i < vector.getSize(); i++) {
-                this.components[i] = 0;
-            }
+            this.resize(vector.getSize());
         }
 
         for (int i = 0; i < vector.getSize(); i++) {
@@ -79,37 +84,28 @@ public class Vector {
         }
     }
 
-
-    public void subtractAnotherVector(Vector vector) {
-        if (vector.getSize() < this.getSize()) {
-            for (int i = vector.getSize(); i < this.getSize(); i++) {
-                vector.components[i] = 0;
-            }
-        }
-
+    public void subtract(Vector vector) {
         if (vector.getSize() > this.getSize()) {
-            for (int i = this.getSize(); i < vector.getSize(); i++) {
-                this.components[i] = 0;
-            }
+            this.resize(vector.getSize());
         }
-
         for (int i = 0; i < vector.getSize(); i++) {
             this.components[i] -= vector.components[i];
         }
     }
 
-    public void multiplyByScalar(int scalar) {
+    public void scale(double scalar) {
         for (int i = 0; i < this.getSize(); i++) {
             this.components[i] *= scalar;
         }
+
     }
 
-    public void unfoldVector() {
-        this.multiplyByScalar(-1);
+    public void negate() {
+        this.scale(-1);
     }
 
     public double getVectorLength() {
-        int squaresCoordinatesSum = 0;
+        double squaresCoordinatesSum = 0.0;
 
         for (int i = 0; i < this.getSize(); i++) {
             squaresCoordinatesSum += this.components[i] * this.components[i];
@@ -118,11 +114,9 @@ public class Vector {
         return Math.sqrt(squaresCoordinatesSum);
     }
 
-
     @Override
     public String toString() {
         return Arrays.toString(this.components).replace("[", "{").replace("]", "}");
-
     }
 
     @Override
@@ -155,12 +149,41 @@ public class Vector {
 
     @Override
     public int hashCode() {
-        final int prime = 15;
+        final int prime = 17;
         int hash = 1;
 
         for (int i = 0; i < this.getSize(); i++) {
             hash = prime * hash + Double.hashCode(this.components[i]);
         }
+
         return hash;
+    }
+
+    public static Vector add(Vector vector1, Vector vector2) {
+
+        Vector result = new Vector(vector1);
+        result.add(vector2);
+
+        return result;
+    }
+
+    public static Vector subtract(Vector vector1, Vector vector2) {
+
+        Vector result = new Vector(vector1);
+        result.subtract(vector2);
+
+        return result;
+
+    }
+
+    public static double dot(Vector vector1, Vector vector2) {
+        int k = Math.min(vector1.getSize(), vector2.getSize());
+        double scalarProduct = 0;
+
+        for (int i = 0; i < k; i++) {
+            scalarProduct += vector1.components[i] * vector2.components[i];
+        }
+
+        return scalarProduct;
     }
 }

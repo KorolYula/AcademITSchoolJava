@@ -1,4 +1,4 @@
-package AcademITSchoolOOPJava.Shape.shape;
+package academic_shape.shapes;
 
 public class Circle implements Shape {
     private double radius;
@@ -7,18 +7,22 @@ public class Circle implements Shape {
         this.radius = radius;
     }
 
+    @Override
     public double getWidth() {
         return radius * 2;
     }
 
+    @Override
     public double getHeight() {
         return radius * 2;
     }
 
+    @Override
     public double getArea() {
         return radius * radius * Math.PI;
     }
 
+    @Override
     public double getPerimeter() {
         return 2 * radius * Math.PI;
     }
@@ -29,17 +33,26 @@ public class Circle implements Shape {
     }
 
     @Override
-    public boolean equals(Object shape) {
-        if (shape == this) return true;
-        if (shape == null || shape.getClass() != this.getClass()) return false;
-        Circle c = (Circle) shape;
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (o == null || o.getClass() != getClass()) {
+            return false;
+        }
+
+        Circle c = (Circle) o;
         return radius == c.radius;
     }
 
+    @Override
     public int hashCode() {
         final int prime = 15;
         int hash = 1;
+
         hash = prime * hash + Double.hashCode(radius);
+
         return hash;
     }
 }

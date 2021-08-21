@@ -1,8 +1,6 @@
-package AcademITSchoolOOPJava.Shape.shape;
+package academic_shape.shapes;
 
-public interface Shape {
-    double ZERO = 0.0;
-
+public interface Shape  {
     double getWidth();
 
     double getHeight();

@@ -1,6 +1,6 @@
 package AcademItSchool.Matrix.matrix;
 
-import AcademITSchool.Vector.vector.Vector;
+import Academic_korol.vector.Vector;
 
 
 public class Matrix {

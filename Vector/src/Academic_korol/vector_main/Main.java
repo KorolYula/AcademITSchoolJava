@@ -4,7 +4,7 @@ import Academic_korol.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-        Vector vector1 = new Vector(2);
+        Vector vector1 = new Vector(3);
         System.out.println(vector1);
 
         double[] vv = {1, 3, 4, 10};
@@ -41,7 +41,7 @@ public class Main {
 
         System.out.println(vector5.getLength());
 
-       System.out.println(vector5.equals(vector3));
+        System.out.println(vector5.equals(vector3));
 
         Vector vector6 = new Vector(new double[]{-2, -6, -12, -20});
         System.out.println(vector5.equals(vector6));
@@ -51,10 +51,7 @@ public class Main {
 
         Vector vector8 = Vector.getSubtract(vector4, vector2);
         System.out.println(vector8);
-
-
+        System.out.println(vector8.hashCode());
     }
-
-
 }
 

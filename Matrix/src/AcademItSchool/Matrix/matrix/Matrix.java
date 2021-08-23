@@ -110,7 +110,7 @@ public class Matrix {
         }
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            this.setRowVector(i, Vector.add(this.getRowVector(i), matrix.getRowVector(i)));
+            this.setRowVector(i, Vector.getAdd(this.getRowVector(i), matrix.getRowVector(i)));
         }
     }
 
@@ -120,7 +120,7 @@ public class Matrix {
         }
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            this.setRowVector(i, Vector.subtract(this.getRowVector(i), matrix.getRowVector(i)));
+            this.setRowVector(i, Vector.getSubtract(this.getRowVector(i), matrix.getRowVector(i)));
         }
     }
 }

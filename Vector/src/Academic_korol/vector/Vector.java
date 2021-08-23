@@ -7,7 +7,7 @@ public class Vector {
 
     public Vector(int dimension) {
         if (dimension <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть > 0");
+            throw new IllegalArgumentException("Размерность вектора должна быть>0, а сейчас  " + dimension);
         }
 
         components = new double[dimension];
@@ -15,7 +15,7 @@ public class Vector {
 
     public Vector(Vector vector) {
         if (vector.getSize() <= 0) {
-            throw new IllegalArgumentException("Размерность вектора n должна быть  > 0 ",);
+            throw new IllegalArgumentException(String.format("Размерность вектора должна быть>0,а сейчас " + vector.getSize()));
         }
         components = new double[vector.getSize()];
 
@@ -26,14 +26,14 @@ public class Vector {
 
     public Vector(double[] array) {
         if (array.length <= 0) {
-            throw new IllegalArgumentException("Размерность вектора n должна быть  > 0 ");
+            throw new IllegalArgumentException(String.format("Размерность вектора должна быть>0,а сейчас" + array.length));
         }
         components = Arrays.copyOf(array, array.length);
     }
 
     public Vector(int dimension, double[] array) {
         if (dimension <= 0) {
-            throw new IllegalArgumentException("Размерность вектора n должна быть  > 0 ");
+            throw new IllegalArgumentException(String.format("Размерность вектора должна быть>0,а сейчас " + dimension));
         }
 
         components = Arrays.copyOf(array, dimension);
@@ -55,13 +55,7 @@ public class Vector {
         double[] old = components;
         components = new double[n];
 
-        for (int i = 0; i < old.length; i++) {
-            components[i] = old[i];
-        }
-
-        for (int i = old.length; i < n; i++) {
-            components[i] = 0;
-        }
+        System.arraycopy(old, 0, components, 0, old.length);
     }
 
     public void add(Vector vector) {
@@ -85,8 +79,8 @@ public class Vector {
     }
 
     public void multiplyByScale(double scalar) {
-        for (int i = 0; i < components.length; i++) {
-            components[i] *= scalar;
+        for (double e : components) {
+            e *= scalar;
         }
     }
 
@@ -106,7 +100,16 @@ public class Vector {
 
     @Override
     public String toString() {
-        return Arrays.toString(components).replace("[", "{").replace("]", "}");
+
+        StringBuilder result = new StringBuilder();
+        result.append("{");
+
+        for (double e : components) {
+            result.append(e + ",");
+        }
+
+        result.append("}");
+        return result.toString();
     }
 
     @Override
@@ -137,18 +140,18 @@ public class Vector {
 
     @Override
     public int hashCode() {
-        final int prime = 17;
+       /*final int prime = 17;
         int hash = 1;
 
-        for (int i = 0; i < components.length; i++) {
-            hash = prime * hash + Double.hashCode(components[i]);
+        for (double e : components) {
+            hash = prime * hash + Double.hashCode(e);
         }
 
-        return hash;
+        return hash;*/
+        return Arrays.hashCode(this.components);
     }
 
     public static Vector getAdd(Vector vector1, Vector vector2) {
-
         Vector result = new Vector(vector1);
         result.add(vector2);
 
@@ -156,7 +159,6 @@ public class Vector {
     }
 
     public static Vector getSubtract(Vector vector1, Vector vector2) {
-
         Vector result = new Vector(vector1);
         result.subtract(vector2);
 

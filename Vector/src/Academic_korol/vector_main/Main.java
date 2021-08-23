@@ -55,6 +55,9 @@ public class Main {
         System.out.println(vector8.hashCode());
 
         System.out.println(Vector.getDot(vector8,vector7));
+
+        Vector vector9 = new Vector(9,vector2);
+       System.out.println(vector9);
     }
 }
 

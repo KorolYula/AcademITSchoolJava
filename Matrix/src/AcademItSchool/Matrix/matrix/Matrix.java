@@ -6,50 +6,52 @@ import Academic_korol.vector.Vector;
 public class Matrix {
     private Vector[] rows;
 
-        public Matrix(int n, int m) {
+    public Matrix(int n, int m) {
         if (n <= 0 || m <= 0) {
             throw new IllegalArgumentException("Размеры матрицы не могут быть <0" + n + m);
         }
+
         rows = new Vector[n];
+
         for (int i = 0; i < n; i++) {
             rows[i] = new Vector(m);
         }
     }
 
     public Matrix(Matrix matrix) {
-        this.rows = new Vector[matrix.getRowsCount()];
+        rows = new Vector[matrix.getRowsCount()];
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            this.rows[i] = new Vector(matrix.rows[i]);
+            rows[i] = new Vector(matrix.rows[i]);
         }
     }
 
     public Matrix(Vector[] vectorsArray) {
-        //TODO Проверка , что все вектора одной длины,добить нулями
-        int maxSize = vectorsArray.length;
+        int maxSize = vectorsArray[0].getSize();
+
         for (Vector e : vectorsArray) {
             maxSize = Math.max(maxSize, e.getSize());
         }
 
         rows = new Vector[vectorsArray.length];
+
         for (int i = 0; i < vectorsArray.length; i++) {
-            rows[i] = new Vector(vectorsArray[i]);
-
+            rows[i] = new Vector(maxSize, vectorsArray[i]);
         }
-
     }
 
-    //TODO конструктор из массива проверка размерности
     public Matrix(double[][] array) {
-        int maxSize = array.length;
+        int maxSize = array[0].length;
+
         for (double[] e : array) {
             maxSize = Math.max(maxSize, e.length);
         }
-        rows = new Vector[maxSize];
-        System.arraycopy(array, 0, rows, 0, maxSize);
-        /*for (int i = 0; i < array.length; i++) {
-            this.rows[i] = new Vector(array[i]);
-        }*/
+
+        rows = new Vector[array.length];
+
+        for (int i = 0; i < array.length; i++) {
+            rows[i] = new Vector(maxSize, array[i]);
+        }
     }
 
     public int getRowsCount() {
@@ -68,70 +70,114 @@ public class Matrix {
     }
 
     public void setRowVector(int i, Vector vector) {
-        if (vector.getSize() > getColumnsCount()) {
-            throw new IllegalArgumentException("Размерность вектора больше размерности матрицы");
+        if (vector.getSize() != getColumnsCount()) {
+            throw new IllegalArgumentException("Размерность вектора не совпадает с размерностью матрицы");
         }
-        if (vector.getSize() <= getColumnsCount()) {
-
-            System.arraycopy(vector, 0, rows, 0, getColumnsCount());
-            /*for (int j = 0; j < vector.getSize(); j++) {
-                rows[i].setComponent(j, vector.getComponent(j));
-            }
-            for (int j = vector.getSize(); j < getColumnsCount(); j++) {
-                rows[i].setComponent(j, 0);
-            }*/
+        for (int j = 0; j < vector.getSize(); j++) {
+            rows[i].setComponent(j, vector.getComponent(j));
         }
     }
 
     public Vector getColumnVector(int i) {
-        if (i > this.getColumnsCount()) {
+        if (i > getColumnsCount()) {
             throw new IllegalArgumentException("Выход за пределы матрицы");
         }
-        Vector v = new Vector(this.getRowsCount());
+
+        Vector v = new Vector(getRowsCount());
 
         for (int j = 0; j < getRowsCount(); j++) {
             v.setComponent(j, getRowVector(j).getComponent(i));
         }
+
         return v;
     }
 
     public void scale(double scalar) {
-        for (int i = 0; i < this.getRowsCount(); i++) {
+        for (int i = 0; i < getRowsCount(); i++) {
             rows[i].multiplyByScale(scalar);
         }
     }
 
-
     public Matrix getTransposed() {
-        Matrix matrix = new Matrix(this.getColumnsCount(), this.getRowsCount());
+        Matrix matrix = new Matrix(this.getColumnsCount(), getRowsCount());
 
-        for (int i = 0; i < this.getColumnsCount(); i++) {
-            matrix.setRowVector(i, this.getColumnVector(i));
+        for (int i = 0; i < getColumnsCount(); i++) {
+            matrix.setRowVector(i, getColumnVector(i));
         }
+
         return matrix;
     }
 
+    public static  Matrix getMinor(Matrix matrix, int index) {
+        double[][] result = new double[matrix.getRowsCount() - 1][matrix.getRowsCount() - 1];
 
-    //TODO определитель матрицы
+       int  indexNew=0;
 
-    //TODO toString определить так, чтобы результат получался в таком виде: { { 1, 2 }, { 2, 3 } }
+        for (int indexOld = 0; indexOld < matrix.getRowsCount();) {
+            if (indexOld == index) {
+                indexOld++;
+                continue;
+            }
+
+            for (int j = 1; j < matrix.getRowsCount(); j++) {
+                result[indexNew][j - 1] = matrix.getRowVector(indexOld).getComponent(j);
+            }
+
+                indexNew++;
+                indexOld++;
+        }
+
+        return new Matrix(result);
+
+}
+
+    public static double getDeterminant(Matrix matrix) {
+        if (matrix.getRowsCount() != matrix.getColumnsCount()) {
+            throw new IllegalArgumentException("Для вычисления определителя матрица должны быть квадратной!");
+        }
+
+        if (matrix.getRowsCount() == 1) {
+            return matrix.getColumnVector(0).getComponent(0);
+        }
+
+        double determinant = 0;
+
+        for (int i = 0; i < matrix.getRowsCount(); i++) {
+            determinant += Math.pow(-1, i+2) * matrix.getColumnVector(0).getComponent(i) * getDeterminant(getMinor(matrix, i));
+        }
+
+        return  determinant;
+    }
 
     @Override
     public String toString() {
-
         StringBuilder result = new StringBuilder();
         result.append("{");
 
         for (Vector e : rows) {
-            result.append(e + ", ");
+            result.append(e.toString());
+            result.append(", ");
         }
 
+        result.delete(result.length() - 2, result.length() - 1);
         result.append("}");
+
         return result.toString();
     }
 
-    //TODO умножение матрицы на вектор
+    public Vector getDotVector(Vector vector) {
+        if (vector.getSize() != getRowsCount()) {
+            throw new IllegalArgumentException("Размерности матрицы и вектора не совпадают!");
+        }
 
+        Vector result = new Vector(getColumnsCount());
+
+        for (int i = 0; i < getColumnsCount(); i++) {
+            result.setComponent(i, Vector.getDot(vector, getColumnVector(i)));
+        }
+
+        return result;
+    }
 
     public void add(Matrix matrix) {
         if (matrix.getRowsCount() != this.getRowsCount()) {
@@ -152,14 +198,42 @@ public class Matrix {
             this.setRowVector(i, Vector.getSubtract(this.getRowVector(i), matrix.getRowVector(i)));
         }
     }
+
+    public static Matrix getAdd(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getRowsCount() != matrix2.getRowsCount()) {
+            throw new IllegalArgumentException("Размерности матриц не совпадают!");
+        }
+
+        Matrix result = new Matrix(matrix1);
+        result.add(matrix2);
+
+        return result;
+    }
+
+    public static Matrix getSubtract(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getRowsCount() != matrix2.getRowsCount()) {
+            throw new IllegalArgumentException("Размерности матриц не совпадают!");
+        }
+
+        Matrix result = new Matrix(matrix1);
+        result.subtract(matrix2);
+
+        return result;
+    }
+
+    public static Matrix getDot(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getColumnsCount() != matrix2.getRowsCount()) {
+            throw new IllegalArgumentException("Размерности матриц не совпадают!");
+        }
+
+        double[][] result = new double[matrix1.getRowsCount()][matrix2.getColumnsCount()];
+
+        for (int i = 0; i < matrix1.getRowsCount(); i++) {
+            for (int j = 0; j < matrix2.getColumnsCount(); j++) {
+                result[i][j] = Vector.getDot(matrix1.getRowVector(i), matrix2.getColumnVector(j));
+            }
+        }
+
+        return new Matrix(result);
+    }
 }
-
-// TODO Статические методы:Сложение матриц
-
-// TODO Статические методы Вычитание матриц
-
-//TODO Статические методы Умножение матриц
-
-
-
-

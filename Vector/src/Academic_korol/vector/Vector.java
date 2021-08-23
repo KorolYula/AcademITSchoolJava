@@ -13,12 +13,20 @@ public class Vector {
         components = new double[dimension];
     }
 
-    public Vector(Vector vector) {
-        if (vector.getSize() <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть>0,а сейчас " + vector.getSize());
+    public Vector(Vector v){
+        if (v.getSize() <= 0) {
+            throw new IllegalArgumentException("Размерность вектора должна быть>0,а сейчас " + v.getSize());
         }
-        components = new double[vector.getSize()];
+        this.components = new double[v.getSize()];
 
+        System.arraycopy(v.components, 0, this.components, 0, v.getSize());
+    }
+
+    public Vector(int dimension, Vector vector) {
+        if (vector.getSize() <= 0 || dimension <= 0) {
+            throw new IllegalArgumentException("Размерность вектора должна быть>0 ");
+        }
+        this.components = new double[dimension];
         System.arraycopy(vector.components, 0, components, 0, vector.getSize());
     }
 
@@ -106,7 +114,7 @@ public class Vector {
             result.append(e);
             result.append(", ");
         }
-
+        result.delete(result.length() - 2, result.length() - 1);
         result.append("}");
         return result.toString();
     }

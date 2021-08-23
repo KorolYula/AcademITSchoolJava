@@ -15,25 +15,23 @@ public class Vector {
 
     public Vector(Vector vector) {
         if (vector.getSize() <= 0) {
-            throw new IllegalArgumentException(String.format("Размерность вектора должна быть>0,а сейчас " + vector.getSize()));
+            throw new IllegalArgumentException("Размерность вектора должна быть>0,а сейчас " + vector.getSize());
         }
         components = new double[vector.getSize()];
 
-        for (int i = 0; i < vector.getSize(); i++) {
-            components[i] = vector.components[i];
-        }
+        System.arraycopy(vector.components, 0, components, 0, vector.getSize());
     }
 
     public Vector(double[] array) {
         if (array.length <= 0) {
-            throw new IllegalArgumentException(String.format("Размерность вектора должна быть>0,а сейчас" + array.length));
+            throw new IllegalArgumentException("Размерность вектора должна быть>0,а сейчас" + array.length);
         }
         components = Arrays.copyOf(array, array.length);
     }
 
     public Vector(int dimension, double[] array) {
         if (dimension <= 0) {
-            throw new IllegalArgumentException(String.format("Размерность вектора должна быть>0,а сейчас " + dimension));
+            throw new IllegalArgumentException("Размерность вектора должна быть>0,а сейчас " + dimension);
         }
 
         components = Arrays.copyOf(array, dimension);
@@ -79,8 +77,8 @@ public class Vector {
     }
 
     public void multiplyByScale(double scalar) {
-        for (double e : components) {
-            e *= scalar;
+        for (int i = 0; i < getSize(); i++) {
+            components[i] *= scalar;
         }
     }
 
@@ -105,7 +103,8 @@ public class Vector {
         result.append("{");
 
         for (double e : components) {
-            result.append(e + ",");
+            result.append(e);
+            result.append(", ");
         }
 
         result.append("}");
@@ -140,14 +139,6 @@ public class Vector {
 
     @Override
     public int hashCode() {
-       /*final int prime = 17;
-        int hash = 1;
-
-        for (double e : components) {
-            hash = prime * hash + Double.hashCode(e);
-        }
-
-        return hash;*/
         return Arrays.hashCode(this.components);
     }
 

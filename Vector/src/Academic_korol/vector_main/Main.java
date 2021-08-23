@@ -51,7 +51,10 @@ public class Main {
 
         Vector vector8 = Vector.getSubtract(vector4, vector2);
         System.out.println(vector8);
+
         System.out.println(vector8.hashCode());
+
+        System.out.println(Vector.getDot(vector8,vector7));
     }
 }
 

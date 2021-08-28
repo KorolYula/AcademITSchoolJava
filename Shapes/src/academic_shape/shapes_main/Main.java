@@ -1,8 +1,8 @@
 package academic_shape.shapes_main;
 
 import academic_shape.shapes.*;
-import academic_shape.shapes.comparator.AreaComparator;
-import academic_shape.shapes.comparator.PerimeterComparator;
+import academic_shape.comparators.AreaComparator;
+import academic_shape.comparators.PerimeterComparator;
 
 import java.util.*;
 
@@ -18,13 +18,14 @@ public class Main {
                 new Square(5),
                 new Square(2),
                 new Circle(13),
-                new Rectangle(1, 6)};
+                new Rectangle(1, 6)
+        };
 
-        Arrays.sort(shapes, new AreaComparator());
+        Arrays.sort(shapes, new AreaComparator().reversed());
         System.out.print("Фигура с максимальной площадью: ");
         System.out.println(shapes[0]);
 
-        Arrays.sort(shapes, new PerimeterComparator());
+        Arrays.sort(shapes, new PerimeterComparator().reversed());
         System.out.print("Фигура со вторым по величине периметром: ");
         System.out.println(shapes[1]);
     }

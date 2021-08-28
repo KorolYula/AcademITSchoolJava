@@ -2,18 +2,42 @@ package academic_shape.shapes;
 
 public class Triangle implements Shape {
     private double x1;
-    private double x2;
-    private double x3;
     private double y1;
+    private double x2;
     private double y2;
+    private double x3;
     private double y3;
 
-    public Triangle(double x1, double x2, double x3, double y1, double y2, double y3) {
+    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
         this.x2 = x2;
         this.x3 = x3;
         this.y1 = y1;
         this.y2 = y2;
+        this.y3 = y3;
+    }
+
+    public void setX1(double x1) {
+        this.x1 = x1;
+    }
+
+    public void setX2(double x2) {
+        this.x2 = x2;
+    }
+
+    public void setX3(double x3) {
+        this.x3 = x3;
+    }
+
+    public void setY1(double y1) {
+        this.y1 = y1;
+    }
+
+    public void setY2(double y2) {
+        this.y2 = y2;
+    }
+
+    public void setY3(double y3) {
         this.y3 = y3;
     }
 
@@ -32,21 +56,21 @@ public class Triangle implements Shape {
         return 0.5 * Math.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
     }
 
-    private double getLength (double x1, double x2, double y1, double y2) {
+    private static double getLength(double x1, double y1, double x2, double y2) {
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     }
 
     @Override
     public double getPerimeter() {
-        double side1 = getLength(x1,x2,y1,y2);
-        double side2 = getLength(x2,x3,y2,y3);
-        double side3 = getLength(x1,x3,y1,y3);
-        return side1 + side2 + side3;
+        double side1Length = getLength(x1, y1, x2, y2);
+        double side2Length = getLength(x2, y2, x3, y3);
+        double side3Length = getLength(x1, y1, x3, y3);
+        return side1Length + side2Length + side3Length;
     }
 
     @Override
     public String toString() {
-        return String.format("Треугольник с координатами углов (%.2f; %.2f), (%.2f; %.2f), (%.2f; %.2f)", x1, y1, x2, y2, x3, y3);
+        return String.format("Треугольник с координатами вершин (%.2f; %.2f), (%.2f; %.2f), (%.2f; %.2f)", x1, y1, x2, y2, x3, y3);
     }
 
     @Override
@@ -65,7 +89,7 @@ public class Triangle implements Shape {
 
     @Override
     public int hashCode() {
-        final int prime = 15;
+        final int prime = 13;
         int hash = 1;
 
         hash = prime * hash + Double.hashCode(x1);

@@ -9,6 +9,14 @@ public class Rectangle implements Shape {
         this.width = width;
     }
 
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
     @Override
     public double getWidth() {
         return width;
@@ -31,7 +39,7 @@ public class Rectangle implements Shape {
 
     @Override
     public String toString() {
-        return String.format("Прямоугольник со сторонами %.2f и  %.2f", height, width);
+        return String.format("Прямоугольник с высотой %.2f и шириной %.2f", height, width);
     }
 
     @Override
@@ -50,7 +58,7 @@ public class Rectangle implements Shape {
 
     @Override
     public int hashCode() {
-        final int prime = 15;
+        final int prime = 13;
         int hash = 1;
 
         hash = prime * hash + Double.hashCode(height);

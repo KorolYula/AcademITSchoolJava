@@ -1,6 +1,6 @@
 package academic_shape.shapes;
 
-public interface Shape  {
+public interface Shape {
     double getWidth();
 
     double getHeight();

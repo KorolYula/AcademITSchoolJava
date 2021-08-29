@@ -32,13 +32,26 @@ public class MyArrayList<E> implements List<E> {
                 return true;
             }
         }
+
         return false;
     }
 
-    //TODO----------------------------------------------------------------------------------
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<>() {
+
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < length;
+            }
+
+            @Override
+            public E next() {
+                return items[currentIndex++];
+            }
+        };
     }
 
     @Override
@@ -50,7 +63,7 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public <E> E[] toArray(E[] a) {
-        if (a.length>=length){
+        if (a.length >= length) {
             System.arraycopy(items, 0, a, 0, length);
             return a;
         }
@@ -152,7 +165,7 @@ public class MyArrayList<E> implements List<E> {
         return this.items[index];
     }
 
-        @Override
+    @Override
     public E set(int index, E element) {
         if (index >= length) {
             throw new IllegalArgumentException("Выход за длину списка");
@@ -214,19 +227,19 @@ public class MyArrayList<E> implements List<E> {
         return -1;
     }
 
-    public void  ensureCapacity(int capacity) {
+    public void ensureCapacity(int capacity) {
         if (capacity >= items.length) {
             items = Arrays.copyOf(items, capacity);
         }
     }
 
-    public void  trimToSize() {
+    public void trimToSize() {
         if (length < items.length) {
             items = Arrays.copyOf(items, length);
         }
     }
 
-    //TODO не дает без них (((((------------------------------------------------------------------
+   //В задании их не надо реализовывать ------------------------------------------------------------------
     @Override
     public ListIterator<E> listIterator() {
         return null;

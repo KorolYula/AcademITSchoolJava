@@ -1,85 +1,71 @@
 package Academic_korol.mylist.mylist.mylist;
 
 import java.util.Arrays;
-import java.util.List;
 
-public class MyList<T> {//implements List<E> {
-    private T data;
-    private MyList<T> next;
 
-//TODO не было задачи сделать конструктор
-    public MyList(int capacity) { //T[] value) {
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("Размерность списка должна быть > 0, а сейчас  " + length);
-        }
-        this.items[capacity] = new E[capacity];
-        this.capacity = capacity;
+public class MyList<T> {
+    private ListNode<T> head;
+    int length;
+
+    public MyList() {
     }
 
     public int getLength() {
-        return items.length;
+        return length;
     }
 
-    public E getPremierElement() {
-        return this.items[0];
+    public T getPremierElement() {
+        return head.getData();
     }
 
-    public E getE(int index) {
-        if (index >= items.length) {
-            throw new IllegalArgumentException("Выход за длину списка");
-        }
-        return this.items[index];
+    public void AddPremierElement(T data) {
+        head = new ListNode<>(data, head);
     }
 
-    public E setE(int index, E value) {
-        if (index >= items.length) {
-            throw new IllegalArgumentException("Выход за длину списка");
-        }
-        E old= items[index];
-        items[index] = value;
+    public T DeletePremierElement() {
+        T old = head.getData();
+        head = head.getNext();
         return old;
     }
 
-    public void AddPremierElement(E obj) {
-        if (items.length >= length) {
-            throw new IllegalArgumentException("Выход за длину списка");
-        }
-        E old= items[index];
-        if (index < items.length - 1) {
-            System.arraycopy(items, index + 1, items, index, length - index - 1);
-        }
-        --length;
 
-        items[length] = obj;
-        ++length;
+    public boolean DeleteElement(T t) {
+        ListNode<T> prev = null;
+
+        for (ListNode<T> p = head ; p != null; p = p.getNext()) {
+            if (p.getData().equals(t)){
+                prev.setNext(p.getNext());
+                return true;
+            }
+            prev = p;
+        }
+        return false;
     }
 
-
-    public void Add(int index, E obj) {
-
-        if (length >= items.length) {
-            IncreaseCapacity();
+    public T DeleteElement(int index) {
+        if (index > length) {
+            throw new IllegalArgumentException("Индекс выходит за пределы длины списка" + length);
         }
-        items[length] = obj;
-        ++length;
+        if (index==0) {
+            return DeletePremierElement();
+        }
+
+        ListNode<T> prev = null;
+        ListNode<T> p = head;
+        for (int count=1;count<=index;count++) {
+            prev = p;
+            p = p.getNext();
+
+        }
+            if (p.getData().equals(t)){
+                prev.setNext(p.getNext());
+
+            }
+            prev = p;
+        }
+
     }
 
-    private void IncreaseCapacity() {
-        items = Arrays.copyOf(items, items.length * 2);
-    }
-
-    public E removeE(int index) {
-        if (index >= items.length) {
-            throw new IllegalArgumentException("Выход за длину списка");
-        }
-        E old= items[index];
-        if (index < items.length - 1) {
-            System.arraycopy(items, index + 1, items, index, items.length - index - 1);
-        }
-        --items.length;
-        items[items.length]=null;
-        return  old;
-    }
 }
 
 

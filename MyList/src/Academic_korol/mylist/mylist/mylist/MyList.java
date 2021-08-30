@@ -1,14 +1,12 @@
 package Academic_korol.mylist.mylist.mylist;
 
-import java.util.Arrays;
-
-
 public class MyList<T> {
     private ListNode<T> head;
     int length;
 
     public MyList() {
     }
+
 
     public int getLength() {
         return length;
@@ -22,22 +20,79 @@ public class MyList<T> {
         head = new ListNode<>(data, head);
     }
 
+    public T getData(int index) {
+        if (index > length) {
+            throw new IllegalArgumentException("Индекс выходит за пределы длины списка" + length);
+        }
+
+        if (index == 0) {
+            return head.getData();
+        }
+
+        ListNode<T> p = head;
+
+        for (int i = 1; i <= index; i++) {
+            p = p.getNext();
+        }
+
+        return p.getData();
+    }
+
+    public T setData(int index, T data) {
+        if (index > length) {
+            throw new IllegalArgumentException("Индекс выходит за пределы длины списка" + length);
+        }
+
+        if (index == 0) {
+            return head.getData();
+        }
+
+        ListNode<T> p = head;
+
+        for (int i = 1; i <= index; i++) {
+            p = p.getNext();
+        }
+
+        return p.setData(data);
+    }
+
+    public void AddElement(int index, T data) {
+        if (index > length) {
+            throw new IllegalArgumentException("Индекс выходит за пределы длины списка" + length);
+        }
+
+        if (index == 0) {
+            head = new ListNode<>(data, head);
+            return;
+        }
+
+        ListNode<T> p = head;
+
+        for (int i = 1; i <= index; i++) {
+            p = p.getNext();
+        }
+
+        p.setNext(new ListNode<>(data, p.getNext()));
+
+    }
+
     public T DeletePremierElement() {
         T old = head.getData();
         head = head.getNext();
+
         return old;
     }
 
-
     public boolean DeleteElement(T t) {
-        ListNode<T> prev = null;
-
-        for (ListNode<T> p = head ; p != null; p = p.getNext()) {
-            if (p.getData().equals(t)){
+        if (head.getData().equals(t)) {
+            DeletePremierElement();
+            return true;
+        }
+        for (ListNode<T> p = head.getNext(), prev = head; p != null; prev = p, p = p.getNext()) {
+            if (p.getData().equals(t)) {
                 prev.setNext(p.getNext());
                 return true;
             }
-            prev = p;
         }
         return false;
     }
@@ -46,27 +101,54 @@ public class MyList<T> {
         if (index > length) {
             throw new IllegalArgumentException("Индекс выходит за пределы длины списка" + length);
         }
-        if (index==0) {
+        if (index == 0) {
             return DeletePremierElement();
         }
-
-        ListNode<T> prev = null;
-        ListNode<T> p = head;
-        for (int count=1;count<=index;count++) {
+        ListNode<T> prev = head;
+        ListNode<T> p = head.getNext();
+        for (int i = 1; i <= index; i++) {
             prev = p;
             p = p.getNext();
-
         }
-            if (p.getData().equals(t)){
-                prev.setNext(p.getNext());
+        T old = p.getData();
+        prev.setNext(p.getNext());
+        return old;
+    }
 
-            }
-            prev = p;
+    public void reversing() {
+        ListNode<T> pPrev = null;
+        ListNode<T> pNext;
+
+        for (ListNode<T> p = head; p != null; ) {
+            pNext = p.getNext();
+            p.setNext(pPrev);
+            pPrev = p;
+            p = pNext;
         }
+        head = pPrev;
+    }
 
+    public MyList<T> copyList() {
+        MyList<T> ll = new MyList<>();
+        ll.length = length;
+        ListNode<T> item = new ListNode<>(head.getData());
+        for (ListNode<T> p = head.getNext(); p != null; p = p.getNext()) {
+            ListNode<T> itemNext = new ListNode<>(p.getData());
+            item.setNext(itemNext);
+            item = item.getNext();
+        }
+        return ll;
     }
 
 }
+
+
+
+
+
+
+
+
 
 
 

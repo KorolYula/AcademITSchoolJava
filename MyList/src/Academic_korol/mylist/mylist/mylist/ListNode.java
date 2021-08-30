@@ -16,6 +16,7 @@ public class ListNode<T> {
     public T getData() {
         return data;
     }
+
     public T setData(T data) {
         T old=this.data;
         this.data = data;
@@ -25,23 +26,9 @@ public class ListNode<T> {
     public ListNode<T> getNext() {
         return next;
     }
+
     public void setNext(ListNode<T> t) {
         this.next=t;
     }
-    public DeleteListNode(T data) {
-        for (
-                ListItem<Integer> p = head, prev = null;
-                p != null;
-                prev = p, p = p.getNext()) {
-            System.out.println(p.getData());
-        }
-        this.data = data;
-        this.next = next;
-    }
-    /*public void setNext(ListNode<T> next) {
-        this.next = next;
-    }*/
-
-
 }
 

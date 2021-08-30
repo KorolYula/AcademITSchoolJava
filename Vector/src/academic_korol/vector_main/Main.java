@@ -1,6 +1,6 @@
-package Academic_korol.vector_main;
+package academic_korol.vector_main;
 
-import Academic_korol.vector.Vector;
+import academic_korol.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
@@ -33,10 +33,10 @@ public class Main {
         vector3.subtract(vector5);
         System.out.println(vector3);
 
-        vector5.multiplyByScale(2);
+        vector5.multiplyByScaler(2);
         System.out.println(vector5);
 
-        vector5.negate();
+        vector5.flip();
         System.out.println(vector5);
 
         System.out.println(vector5.getLength());
@@ -46,18 +46,18 @@ public class Main {
         Vector vector6 = new Vector(new double[]{-2, -6, -12, -20});
         System.out.println(vector5.equals(vector6));
 
-        Vector vector7 = Vector.getAdd(vector4, vector5);
+        Vector vector7 = Vector.getSum(vector4, vector5);
         System.out.println(vector7);
 
-        Vector vector8 = Vector.getSubtract(vector4, vector2);
+        Vector vector8 = Vector.getDifference(vector4, vector2);
         System.out.println(vector8);
 
         System.out.println(vector8.hashCode());
 
-        System.out.println(Vector.getDot(vector8,vector7));
+        System.out.println(Vector.getDotProduct(vector8, vector7));
 
-        Vector vector9 = new Vector(9,vector2);
-       System.out.println(vector9);
+        Vector vector9 = new Vector(9, vector2);
+        System.out.println(vector9);
     }
 }
 

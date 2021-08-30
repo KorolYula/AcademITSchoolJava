@@ -1,4 +1,4 @@
-package Academic_korol.mylist.mylist.mylist;
+package academic_korol.mylist.mylist.mylist;
 
 public class ListNode<T> {
     private T data;

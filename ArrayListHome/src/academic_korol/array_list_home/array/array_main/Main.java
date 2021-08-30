@@ -1,4 +1,4 @@
-package Academic_korol.array_list_home.array.array_main;
+package academic_korol.array_list_home.array.array_main;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

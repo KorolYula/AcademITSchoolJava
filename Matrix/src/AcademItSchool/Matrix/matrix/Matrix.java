@@ -1,6 +1,6 @@
 package AcademItSchool.Matrix.matrix;
 
-import Academic_korol.vector.Vector;
+import academic_korol.vector.Vector;
 
 
 public class Matrix {
@@ -94,7 +94,7 @@ public class Matrix {
 
     public void scale(double scalar) {
         for (int i = 0; i < getRowsCount(); i++) {
-            rows[i].multiplyByScale(scalar);
+            rows[i].multiplyByScaler(scalar);
         }
     }
 
@@ -173,7 +173,7 @@ public class Matrix {
         Vector result = new Vector(getColumnsCount());
 
         for (int i = 0; i < getColumnsCount(); i++) {
-            result.setComponent(i, Vector.getDot(vector, getColumnVector(i)));
+            result.setComponent(i, Vector.getDotProduct(vector, getColumnVector(i)));
         }
 
         return result;
@@ -185,7 +185,7 @@ public class Matrix {
         }
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            this.setRowVector(i, Vector.getAdd(this.getRowVector(i), matrix.getRowVector(i)));
+            this.setRowVector(i, Vector.getSum(this.getRowVector(i), matrix.getRowVector(i)));
         }
     }
 
@@ -195,7 +195,7 @@ public class Matrix {
         }
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            this.setRowVector(i, Vector.getSubtract(this.getRowVector(i), matrix.getRowVector(i)));
+            this.setRowVector(i, Vector.getDifference(this.getRowVector(i), matrix.getRowVector(i)));
         }
     }
 
@@ -230,7 +230,7 @@ public class Matrix {
 
         for (int i = 0; i < matrix1.getRowsCount(); i++) {
             for (int j = 0; j < matrix2.getColumnsCount(); j++) {
-                result[i][j] = Vector.getDot(matrix1.getRowVector(i), matrix2.getColumnVector(j));
+                result[i][j] = Vector.getDotProduct(matrix1.getRowVector(i), matrix2.getColumnVector(j));
             }
         }
 

@@ -45,6 +45,7 @@ public class Main {
                     uniqueNumbersArray.add(e);
                 }
             }
+
             System.out.println(numbersArray);
             System.out.println(uniqueNumbersArray);
         }

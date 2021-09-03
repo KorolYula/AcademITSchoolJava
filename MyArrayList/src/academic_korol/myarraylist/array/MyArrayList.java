@@ -7,6 +7,7 @@ public class MyArrayList<E> implements List<E> {
     private E[] items;
     private int length;
 
+
     public MyArrayList(int capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Размерность списка должна быть > 0 ");
@@ -150,6 +151,7 @@ public class MyArrayList<E> implements List<E> {
         }
         return count > 0;
     }
+
 
     @Override
     public void clear() {

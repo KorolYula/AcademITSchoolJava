@@ -16,7 +16,7 @@ public class MyList<T> {
         return head.getData();
     }
 
-    public void AddPremierElement(T data) {
+    public void addPremierElement(T data) {
         head = new ListNode<>(data, head);
     }
 
@@ -56,7 +56,7 @@ public class MyList<T> {
         return p.setData(data);
     }
 
-    public void AddElement(int index, T data) {
+    public void addElement(int index, T data) {
         if (index > length) {
             throw new IllegalArgumentException("Индекс выходит за пределы длины списка" + length);
         }
@@ -76,16 +76,16 @@ public class MyList<T> {
 
     }
 
-    public T DeletePremierElement() {
+    public T deletePremierElement() {
         T old = head.getData();
         head = head.getNext();
 
         return old;
     }
 
-    public boolean DeleteElement(T t) {
+    public boolean deleteElement(T t) {
         if (head.getData().equals(t)) {
-            DeletePremierElement();
+            deletePremierElement();
             return true;
         }
         for (ListNode<T> p = head.getNext(), prev = head; p != null; prev = p, p = p.getNext()) {
@@ -97,12 +97,12 @@ public class MyList<T> {
         return false;
     }
 
-    public T DeleteElement(int index) {
+    public T deleteElement(int index) {
         if (index > length) {
             throw new IllegalArgumentException("Индекс выходит за пределы длины списка" + length);
         }
         if (index == 0) {
-            return DeletePremierElement();
+            return deletePremierElement();
         }
         ListNode<T> prev = head;
         ListNode<T> p = head.getNext();
@@ -139,8 +139,20 @@ public class MyList<T> {
         }
         return ll;
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

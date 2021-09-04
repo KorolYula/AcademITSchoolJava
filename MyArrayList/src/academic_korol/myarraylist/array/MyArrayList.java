@@ -152,8 +152,7 @@ public class MyArrayList<E> implements List<E> {
         return count > 0;
     }
 
-
-    @Override
+        @Override
     public void clear() {
         length = 0;
         items = null;

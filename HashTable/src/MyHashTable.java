@@ -86,6 +86,7 @@ public class MyHashTable<T> implements Collection<T> {
         int hashCode = GetHashCode(t);
 
         if (items[hashCode] == null) {
+            items[hashCode] = new LinkedList<T>();
             items[hashCode].add(t);
             elementCount++;
             return true;

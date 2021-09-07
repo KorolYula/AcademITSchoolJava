@@ -1,43 +1,43 @@
-package academic_shape.shapes;
+package academic.korol.shapes;
 
 public class Square implements Shape {
-    private double side;
+    private double sideLenght;
 
-    public Square(double side) {
-        this.side = side;
-    }
-
-    public void setSide(double side) {
-        this.side = side;
+    public Square(double sideLenght) {
+        this.sideLenght = sideLenght;
     }
 
     public double getSide() {
-        return side;
+        return sideLenght;
+    }
+
+    public void setSide(double side) {
+        this.sideLenght = sideLenght;
     }
 
     @Override
     public double getWidth() {
-        return side;
+        return sideLenght;
     }
 
     @Override
     public double getHeight() {
-        return side;
+        return sideLenght;
     }
 
     @Override
     public double getArea() {
-        return side * side;
+        return sideLenght * sideLenght;
     }
 
     @Override
     public double getPerimeter() {
-        return side * 4;
+        return sideLenght * 4;
     }
 
     @Override
     public String toString() {
-        return String.format("Квадрат со стороной %.2f ", side);
+        return String.format("Квадрат со стороной %.2f ", sideLenght);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Square implements Shape {
         }
 
         Square s = (Square) o;
-        return side == s.side;
+        return sideLenght == s.sideLenght;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class Square implements Shape {
         final int prime = 13;
         int hash = 1;
 
-        hash = prime * hash + Double.hashCode(side);
+        hash = prime * hash + Double.hashCode(sideLenght);
 
         return hash;
     }

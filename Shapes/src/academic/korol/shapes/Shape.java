@@ -1,4 +1,4 @@
-package academic_shape.shapes;
+package academic.korol.shapes;
 
 public interface Shape {
     double getWidth();

@@ -1,4 +1,4 @@
-package academic_shape.shapes;
+package academic.korol.shapes;
 
 public class Triangle implements Shape {
     private double x1;

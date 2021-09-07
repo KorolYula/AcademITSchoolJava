@@ -1,4 +1,4 @@
-package academic_shape.shapes;
+package academic.korol.shapes;
 
 public class Circle implements Shape {
     private double radius;
@@ -7,12 +7,12 @@ public class Circle implements Shape {
         this.radius = radius;
     }
 
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
-
     public double getRadius() {
         return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     @Override

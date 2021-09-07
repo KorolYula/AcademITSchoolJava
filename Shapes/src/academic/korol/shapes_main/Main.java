@@ -1,8 +1,9 @@
-package academic_shape.shapes_main;
+package academic.korol.shapes_main;
 
+import academic.korol.shapes.*;
 import academic_shape.shapes.*;
-import academic_shape.comparators.AreaComparator;
-import academic_shape.comparators.PerimeterComparator;
+import academic.korol.comparators.AreaComparator;
+import academic.korol.comparators.PerimeterComparator;
 
 import java.util.*;
 

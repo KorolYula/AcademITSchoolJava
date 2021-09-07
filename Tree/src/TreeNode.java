@@ -3,6 +3,9 @@ public class TreeNode<T extends Comparable<T>> {
     private TreeNode<T> right;
     private T data;
 
+    public TreeNode() {
+    }
+
     public TreeNode(T element) {
         data=element;
         left=null;
@@ -28,6 +31,10 @@ public class TreeNode<T extends Comparable<T>> {
     public T getData() {
         return data;
     }
+    public void setData(T data) {
+        this.data=data;
+    }
+
 
 
 

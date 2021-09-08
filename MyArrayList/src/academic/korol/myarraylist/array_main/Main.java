@@ -1,6 +1,6 @@
-package academic_korol.myarraylist.array_main;
+package academic.korol.myarraylist.array_main;
 
-import academic_korol.myarraylist.array.MyArrayList;
+import academic.korol.myarraylist.array.MyArrayList;
 
 import java.util.Arrays;
 

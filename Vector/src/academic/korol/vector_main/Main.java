@@ -1,6 +1,6 @@
-package academic_korol.vector_main;
+package academic.korol.vector_main;
 
-import academic_korol.vector.Vector;
+import academic.korol.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
@@ -33,10 +33,10 @@ public class Main {
         vector3.subtract(vector5);
         System.out.println(vector3);
 
-        vector5.multiplyByScaler(2);
+        vector5.multiplyByScalar(2);
         System.out.println(vector5);
 
-        vector5.flip();
+        vector5.reverse();
         System.out.println(vector5);
 
         System.out.println(vector5.getLength());

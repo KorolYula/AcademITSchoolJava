@@ -1,7 +1,7 @@
 package AcademItSchool.Matrix.matrix_main;
 
 import AcademItSchool.Matrix.matrix.Matrix;
-import academic_korol.vector.Vector;
+import academic.korol.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {

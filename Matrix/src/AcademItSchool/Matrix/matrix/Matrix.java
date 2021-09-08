@@ -1,6 +1,6 @@
 package AcademItSchool.Matrix.matrix;
 
-import academic_korol.vector.Vector;
+import academic.korol.vector.Vector;
 
 
 public class Matrix {
@@ -94,7 +94,7 @@ public class Matrix {
 
     public void scale(double scalar) {
         for (int i = 0; i < getRowsCount(); i++) {
-            rows[i].multiplyByScaler(scalar);
+            rows[i].multiplyByScalar(scalar);
         }
     }
 

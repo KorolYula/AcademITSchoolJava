@@ -1,4 +1,4 @@
-package academic_korol.myarraylist.array;
+package academic.korol.myarraylist.array;
 
 import java.util.*;
 

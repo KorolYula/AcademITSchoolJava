@@ -1,4 +1,4 @@
-package academic_korol.vector;
+package academic.korol.vector;
 
 import java.util.Arrays;
 
@@ -7,15 +7,15 @@ public class Vector {
 
     public Vector(int size) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас  " + size);
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + size);
         }
 
         components = new double[size];
     }
 
     public Vector(Vector v) {
-        if (v.components.length <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть > 0,а сейчас " + v.components.length);
+        if (v.components.length == 0) {
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + v.components.length);
         }
 
         components = Arrays.copyOf(v.components, v.components.length);
@@ -23,16 +23,15 @@ public class Vector {
 
     public Vector(int size, Vector vector) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть > 0 ");
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + size);
         }
 
         components = Arrays.copyOf(vector.components, vector.components.length);
-
     }
 
     public Vector(double[] array) {
-        if (array.length <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть > 0,а сейчас" + array.length);
+        if (array.length == 0) {
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + array.length);
         }
 
         components = Arrays.copyOf(array, array.length);
@@ -40,7 +39,7 @@ public class Vector {
 
     public Vector(int size, double[] array) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть > 0,а сейчас " + size);
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + size);
         }
 
         components = Arrays.copyOf(array, size);
@@ -82,24 +81,24 @@ public class Vector {
         }
     }
 
-    public void multiplyByScaler(double scalar) {
+    public void multiplyByScalar(double scalar) {
         for (int i = 0; i < components.length; i++) {
             components[i] *= scalar;
         }
     }
 
-    public void flip() {
-        multiplyByScaler(-1);
+    public void reverse() {
+        multiplyByScalar(-1);
     }
 
     public double getLength() {
-        double SquaresSum = 0.0;
+        double squaresSum = 0.0;
 
         for (double e : components) {
-            SquaresSum += e * e;
+            squaresSum += e * e;
         }
 
-        return Math.sqrt(SquaresSum);
+        return Math.sqrt(squaresSum);
     }
 
     @Override
@@ -135,7 +134,6 @@ public class Vector {
         }
 
         for (int i = 0; i < components.length; i++) {
-
             if (components[i] != v.components[i]) {
                 return false;
             }

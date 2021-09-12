@@ -1,258 +1,272 @@
 package academic.korol.my_array_list.my_array_list;
+
 import java.util.*;
 
-    public class MyArrayList<E> implements List<E> {
+public class MyArrayList<E> implements List<E> {
 
-        private E[] items;
-        private int length;
+    private E[] items;
+    private int size;
+
+    public MyArrayList() {
+        //noinspection unchecked
+        items = (E[]) new Object[10];
+    }
 
 
-        public MyArrayList(int capacity) {
-            if (capacity <= 0) {
-                throw new IllegalArgumentException("Размерность списка должна быть > 0 ");
-            }
-            //noinspection unchecked
-            items = (E[]) new Object[capacity];
+    public MyArrayList(int capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Размерность списка должна быть >= 0 ");
+        }
+        //noinspection unchecked
+        items = (E[]) new Object[capacity];
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void checkIndex(int index, int maxIndex) {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("Индекс должен быть >=0, а сейчас " + index);
         }
 
-        @Override
-        public int size() {
-            return length;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return length == 0;
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            for (E e : items) {
-                if (e.equals(o)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        public Iterator<E> iterator() {
-            return new Iterator<>() {
-
-                private int currentIndex = 0;
-
-                @Override
-                public boolean hasNext() {
-                    return currentIndex < length;
-                }
-
-                @Override
-                public E next() {
-                    return items[currentIndex++];
-                }
-            };
-        }
-
-        @Override
-        public Object[] toArray() {
-            Object[] o = new Object[length];
-            System.arraycopy(items, 0, o, 0, length);
-            return o;
-        }
-
-        @Override
-        public <E> E[] toArray(E[] a) {
-            if (a.length >= length) {
-                System.arraycopy(items, 0, a, 0, length);
-                return a;
-            }
-            //noinspection unchecked
-            E[] e = (E[]) new Object[length];
-            System.arraycopy(items, 0, e, 0, length);
-            return e;
-        }
-
-        @Override
-        public boolean add(E element) {
-            if (length >= items.length) {
-                IncreaseCapacity();
-            }
-            items[length] = element;
-            length++;
-            return contains(element);
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            for (int i = 0; i < length; i++) {
-                if (items[i].equals(o)) {
-                    System.arraycopy(items, i + 1, items, i, items.length - i - 1);
-                    items[length] = null;
-                    length--;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(Collection<?> c) {
-            for (Object o : c) {
-                if (!contains(o)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public boolean addAll(Collection<? extends E> c) {
-            if (length + c.size() >= items.length) {
-                IncreaseCapacity();
-            }
-            for (E element : c) {
-                add(element);
-            }
-            return containsAll(c);
-        }
-
-        @Override
-        public boolean addAll(int index, Collection<? extends E> c) {
-            if (length + c.size() >= items.length) {
-                IncreaseCapacity();
-            }
-            System.arraycopy(items, index, items, index + c.size(), length - index);
-            System.arraycopy(c, 0, items, index, c.size());
-
-            length += c.size();
-            return containsAll(c);
-        }
-
-        @Override
-        public boolean removeAll(Collection<?> c) {
-            for (Object o : c) {
-                if (!remove(o)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public boolean retainAll(Collection<?> c) {
-            int count = 0;
-            for (E element : items) {
-                if (!c.contains(element)) {
-                    remove(element);
-                    count++;
-                }
-            }
-            return count > 0;
-        }
-
-        @Override
-        public void clear() {
-            length = 0;
-            items = null;
-        }
-
-        @Override
-        public E get(int index) {
-            if (index >= items.length) {
-                throw new IllegalArgumentException("Выход за длину списка");
-            }
-            return this.items[index];
-        }
-
-        @Override
-        public E set(int index, E element) {
-            if (index >= length) {
-                throw new IllegalArgumentException("Выход за длину списка");
-            }
-            E old = items[index];
-            items[index] = element;
-            return old;
-        }
-
-        private void IncreaseCapacity() {
-            items = Arrays.copyOf(items, items.length * 2);
-        }
-
-        @Override
-        public void add(int index, E element) {
-            if (index >= length) {
-                throw new IllegalArgumentException("Выход за длину списка");
-            }
-            if (length >= items.length) {
-                IncreaseCapacity();
-            }
-            System.arraycopy(items, index, items, index + 1, length - index);
-
-            items[index] = element;
-            length++;
-        }
-
-        @Override
-        public E remove(int index) {
-            if (index >= length) {
-                throw new IllegalArgumentException("Выход за длину списка");
-            }
-            E old = items[index];
-            if (index < length - 1) {
-                System.arraycopy(items, index + 1, items, index, items.length - index - 1);
-            }
-            items[length - 1] = null;
-            --length;
-            return old;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            for (int i = 0; i < length; i++) {
-                if (items[i].equals(o)) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            for (int i = length - 1; i >= 0; i--) {
-                if (items[i].equals(o)) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        public void ensureCapacity(int capacity) {
-            if (capacity >= items.length) {
-                items = Arrays.copyOf(items, capacity);
-            }
-        }
-
-        public void trimToSize() {
-            if (length < items.length) {
-                items = Arrays.copyOf(items, length);
-            }
-        }
-
-        //В задании их не надо реализовывать ------------------------------------------------------------------
-        @Override
-        public ListIterator<E> listIterator() {
-            return null;
-        }
-
-        @Override
-        public ListIterator<E> listIterator(int index) {
-            return null;
-        }
-
-        @Override
-        public List<E> subList(int fromIndex, int toIndex) {
-            return null;
+        if (index >= maxIndex) {
+            throw new IndexOutOfBoundsException("Индекс " + index + "должен быть меньше" + maxIndex);
         }
     }
+
+    @Override
+    public E get(int index) {
+        checkIndex(index, items.length);
+            return items[index];
+    }
+
+    @Override
+    public E set(int index, E element) {
+        checkIndex(index,items.length);
+        E old = items[index];
+        items[index] = element;
+        return old;
+    }
+
+
+    @Override
+    public boolean contains(Object o) {
+        return (indexOf(o) >= 0);
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object o : c) {
+            if (!contains(o)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<>() {
+
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size;
+            }
+
+            @Override
+            public E next() {
+                return items[currentIndex++];
+            }
+        };
+    }
+
+    @Override
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        System.arraycopy(items, 0, array, 0, size);
+        return array;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] array) {
+        if (array.length >= size) {
+            //noinspection unchecked
+            array = (T[]) Arrays.copyOf(items, size, array.getClass());
+            return array;
+        }
+        //noinspection unchecked
+        T[] newArray = (T[]) new Object[size];
+        //noinspection unchecked
+        newArray = (T[]) Arrays.copyOf(items, size, array.getClass());
+        return newArray;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        int index = indexOf(o);
+        if (index < 0) {
+            return false;
+        }
+        System.arraycopy(items, index + 1, index, index, size - index - 1);
+        size--;
+        return true;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        int result=0;
+        for (Object o : c) {
+            if (remove(o)){
+                result++;
+            }
+        }
+        return result>0;
+    }
+
+    @Override
+    public boolean add(E element) {
+        add(size+1,element);
+        return true;
+    }
+    @Override
+    public void add(int index, E element) {
+        checkIndex(index,size+2);
+        if (size >= items.length) {
+            increaseCapacity();
+        }
+        if(index<=size) {
+            System.arraycopy(items, index, items, index + 1, size - index);
+        }
+        items[index] = element;
+        size++;
+    }
+
+
+
+    @Override
+    public boolean addAll(Collection<? extends E> collection) {
+        addAll(size, collection);
+        return true;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends E> collection) {
+        checkIndex(index,items.length);
+
+        ensureCapacity(size + collection.size());
+        System.arraycopy(items, index, items, index + collection.size(), size - index);
+        int insertIndex = index;
+
+        for (E e : collection) {
+            add(insertIndex, e);
+            insertIndex++;
+        }
+
+        size += collection.size();
+        return true;
+    }
+
+
+    @Override
+    public boolean retainAll(Collection<?> collection) {
+        int count = 0;
+        for (E element : items) {
+            if (!collection.contains(element)) {
+                remove(element);
+                count++;
+            }
+        }
+        return count > 0;
+    }
+
+    @Override
+    public void clear() {
+        if (size==0) {
+            return;
+                }
+        for (E e : items) {
+            e = null;
+        }
+    }
+
+    private void increaseCapacity() {
+        int newSize = items.length * 2;
+
+        if (items.length == 0) {
+            newSize = 1;
+        }
+        items = Arrays.copyOf(items, newSize);
+    }
+
+
+    @Override
+    public E remove(int index) {
+
+        checkIndex(index,size);
+        E deletedItem = items[index];
+        if (index < size - 1) {
+            System.arraycopy(items, index + 1, items, index, items.length - index - 1);
+        }
+        items[size - 1] = null;
+        --size;
+        return deletedItem;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        for (int i = 0; i < size; i++) {
+            if (items[i].equals(o)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        for (int i = size - 1; i >= 0; i--) {
+            if (items[i].equals(o)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void ensureCapacity(int capacity) {
+        if (capacity >= items.length) {
+            items = Arrays.copyOf(items, capacity);
+        }
+    }
+
+    public void trimToSize() {
+        if (size < items.length) {
+            items = Arrays.copyOf(items, size);
+        }
+    }
+
+    //В задании их не надо реализовывать ------------------------------------------------------------------
+    @Override
+    public ListIterator<E> listIterator() {
+        return null;
+    }
+
+    @Override
+    public ListIterator<E> listIterator(int index) {
+        return null;
+    }
+
+    @Override
+    public List<E> subList(int fromIndex, int toIndex) {
+        return null;
+    }
+}
 

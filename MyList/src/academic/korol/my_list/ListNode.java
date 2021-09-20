@@ -1,6 +1,6 @@
-package academic.korol.my_list.mylist;
+package academic.korol.my_list;
 
- class ListNode<T> {
+class ListNode<T> {
     private T data;
     private ListNode<T> next;
 
@@ -27,8 +27,8 @@ package academic.korol.my_list.mylist;
         return next;
     }
 
-    public void setNext(ListNode<T> nextNode) {
-        this.next = nextNode;
+    public void setNext(ListNode<T> next) {
+        this.next = next;
     }
 }
 

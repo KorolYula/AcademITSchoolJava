@@ -1,19 +1,19 @@
-package academic.korol.my_list.mylist_main;
+package academic.korol.my_list_main;
 
-import academic.korol.my_list.mylist.MyList;
+import academic.korol.my_list.MyList;
 
 public class Main {
     public static void main(String[] args) {
         MyList<String> myList = new MyList<>("Olga");
-        myList.addNode(1, "Petr");
-        myList.addNode(2, "Igor");
-        myList.addNode(3, "Anna");
+        myList.add(1, "Petr");
+        myList.add(2, "Igor");
+        myList.add(3, "Anna");
         System.out.println(myList);
 
         System.out.println(myList.getLength());
 
         myList.addFirst("Serge");
-        myList.addNode(2, "Lena");
+        myList.add(2, "Lena");
         System.out.println(myList);
 
         System.out.println(myList.getFirst());
@@ -22,8 +22,15 @@ public class Main {
         System.out.println(myList.setData(3, "Max"));
         System.out.println(myList);
 
-        System.out.println(myList.deleteNode("Lena"));
+        System.out.println(myList.delete("Lena"));
         System.out.println(myList);
+
+        myList.setData(2, null);
+        System.out.println(myList);
+
+        System.out.println(myList.delete(null));
+        System.out.println(myList);
+
         myList.revers();
         System.out.println(myList);
     }

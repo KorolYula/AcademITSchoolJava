@@ -7,8 +7,8 @@ import java.util.stream.Stream;
 public class Task2 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите число, сколько элементов корней чисел вы хотите вычислить: ");
 
+        System.out.print("Введите число, сколько элементов корней чисел вы хотите вычислить: ");
         int count = scanner.nextInt();
 
         DoubleStream.iterate(0, x -> x + 1)
@@ -20,6 +20,5 @@ public class Task2 {
                 .map(n -> n[0])
                 .limit(count)
                 .forEach(System.out::println);
-
     }
 }

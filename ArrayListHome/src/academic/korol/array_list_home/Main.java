@@ -5,24 +5,23 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 public class Main {
-    public static ArrayList<String> readFile(String fileName){//} throws IOException {
+    public static ArrayList<String> readStringFromFile(String fileName) throws IOException {
         ArrayList<String> fileStrings = new ArrayList<>();
 
-        try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = in.readLine()) != null) {
-                fileStrings.add(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        String string;
+
+        while ((string = reader.readLine()) != null) {
+            fileStrings.add(string);
         }
+
         return fileStrings;
     }
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         try {
-            System.out.println(readFile("input.txt"));
-        } catch (FileNotFoundException , IOException){
+            System.out.println(readStringFromFile("input.txt"));
+        } catch (IOException e) {
             System.out.println("Файл не найден");
         }
         ArrayList<Integer> numbers1 = new ArrayList<>(Arrays.asList(1, 5, 2, 4, 3, 3, 8, 12, 12, 13));

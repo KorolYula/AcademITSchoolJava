@@ -13,12 +13,12 @@ public class Vector {
         components = new double[size];
     }
 
-    public Vector(Vector v) {
-        if (v.components.length == 0) {
-            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + v.components.length);
+    public Vector(Vector vector) {
+        if (vector.components.length == 0) {
+            throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + vector.components.length);
         }
 
-        components = Arrays.copyOf(v.components, v.components.length);
+        components = Arrays.copyOf(vector.components, vector.components.length);
     }
 
     public Vector(int size, Vector vector) {
@@ -127,19 +127,7 @@ public class Vector {
             return false;
         }
 
-        Vector v = (Vector) o;
-
-        if (components.length != v.components.length) {
-            return false;
-        }
-
-        for (int i = 0; i < components.length; i++) {
-            if (components[i] != v.components[i]) {
-                return false;
-            }
-        }
-
-        return true;
+        return Arrays.equals(components, ((Vector) o).components);
     }
 
     @Override
@@ -163,12 +151,12 @@ public class Vector {
 
     public static double getDotProduct(Vector vector1, Vector vector2) {
         int minVectorSize = Math.min(vector1.components.length, vector2.components.length);
-        double scalarProduct = 0;
+        double dotProduct = 0;
 
         for (int i = 0; i < minVectorSize; i++) {
-            scalarProduct += vector1.components[i] * vector2.components[i];
+            dotProduct += vector1.components[i] * vector2.components[i];
         }
 
-        return scalarProduct;
+        return dotProduct;
     }
 }

@@ -2,13 +2,12 @@ package academic.korol.matrix.matrix;
 
 import academic.korol.vector.vector.Vector;
 
-
 public class Matrix {
     private Vector[] rows;
 
     public Matrix(int n, int m) {
         if (n <= 0 || m <= 0) {
-            throw new IllegalArgumentException("Размеры матрицы не могут быть <0" + n + m);
+            throw new IllegalArgumentException("Размеры матрицы не могут быть <0 " + n + m);
         }
 
         rows = new Vector[n];

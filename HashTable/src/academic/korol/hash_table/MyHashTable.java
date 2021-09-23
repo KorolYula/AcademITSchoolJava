@@ -3,38 +3,39 @@ package academic.korol.hash_table;
 import java.util.*;
 
 public class MyHashTable<T> implements Collection<T> {
-    private LinkedList<T>[] items;
-    private int hashTableSize;
-    private int elementCount;
+    private LinkedList<T>[] list;
+   // private int hashTableSize;
+    private int size;
 
     public MyHashTable(int hashTableSize) {
         if (hashTableSize <= 0) {
             throw new IllegalArgumentException("Размерность Хэш-таблицы > 0 ");
         }
         //noinspection unchecked
-        items = (LinkedList<T>[]) new LinkedList[hashTableSize];
-        this.hashTableSize = hashTableSize;
-        elementCount = 0;
+        list = (LinkedList<T>[]) new LinkedList[hashTableSize];
+       // this.hashTableSize = hashTableSize;
+        size = 0;
     }
-
+//TODO правильно ли я зампенила
     public int GetHashCode(T t) {
-        return Math.abs(t.hashCode() % hashTableSize);
+        return Math.abs(t.hashCode() % list.length);
     }
 
+    //TODO количество элементов в таблице
     @Override
     public int size() {
-        return hashTableSize;
+        return list.length;
     }
 
     @Override
     public boolean isEmpty() {
-        return elementCount == 0;
+        return size == 0;
     }
 
     @Override
     public void clear() {
-        for (int i = 0; i <= hashTableSize; i++) {
-            items[i] = null;
+            for (int i = 0; i <= hashTableSize; i++) {
+            list[i] = null;
         }
     }
 
@@ -54,14 +55,14 @@ public class MyHashTable<T> implements Collection<T> {
             public T next() {
                 listIndex++;
 
-                if (items[arrayIndex].size() == 0 || listIndex >= items[arrayIndex].size()) {
+                if (list[arrayIndex].size() == 0 || listIndex >= list[arrayIndex].size()) {
                     arrayIndex++;
                     listIndex = 0;
                 }
 
                 counter++;
 
-                return items[arrayIndex].get(listIndex);
+                return list[arrayIndex].get(listIndex);
             }
         };
     }
@@ -70,11 +71,11 @@ public class MyHashTable<T> implements Collection<T> {
     public boolean contains(Object o) {
         int hashCode = GetHashCode((T) o);
 
-        if (items[hashCode] == null) {
+        if (list[hashCode] == null) {
             return false;
         }
 
-        for (T e : items[hashCode]) {
+        for (T e : list[hashCode]) {
             if (e.equals(o)) {
                 return true;
             }
@@ -87,20 +88,20 @@ public class MyHashTable<T> implements Collection<T> {
     public boolean add(T t) {
         int hashCode = GetHashCode(t);
 
-        if (items[hashCode] == null) {
-            items[hashCode] = new LinkedList<T>();
-            items[hashCode].add(t);
+        if (list[hashCode] == null) {
+            list[hashCode] = new LinkedList<T>();
+            list[hashCode].add(t);
             elementCount++;
             return true;
         }
 
-        for (T e : items[hashCode]) {
+        for (T e : list[hashCode]) {
             if (e.equals(t)) {
                 return false;
             }
         }
 
-        items[hashCode].add(t);
+        list[hashCode].add(t);
         elementCount++;
 
         return true;
@@ -110,13 +111,13 @@ public class MyHashTable<T> implements Collection<T> {
     public boolean remove(Object o) {
         int hashCode = GetHashCode((T) o);
 
-        if (items[hashCode] == null) {
+        if (list[hashCode] == null) {
             return false;
         }
 
-        for (T e : items[hashCode]) {
+        for (T e : list[hashCode]) {
             if (e.equals(o)) {
-                items[hashCode].remove(o);
+                list[hashCode].remove(o);
                 elementCount--;
                 return true;
             }

@@ -1,4 +1,4 @@
-package academic.korol.my_array_list.my_array_list_mail;
+package academic.korol.my_array_list.my_array_list_main;
 
 import academic.korol.my_array_list.my_array_list.MyArrayList;
 

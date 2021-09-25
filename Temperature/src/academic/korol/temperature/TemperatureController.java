@@ -1,13 +1,23 @@
 package academic.korol.temperature;
 
+
 public class TemperatureController {
     private final TemperatureModel model;
 
-        public TemperatureController(TemperatureModel model) {
+    public TemperatureController(TemperatureModel model) {
         this.model = model;
     }
-    public void convertTemperature(double celsiusTemperature){
-            model.setCelsiusTemperature(celsiusTemperature);
+
+    public void convertTemperature(double temperature) {
+        model.setTemperature(temperature);
     }
-    //что-то было ,?
+
+    public void setInputScale(int inputIndex) {
+        model(inputIndex);
+    }
+
+    public void setOutputScale(int outputIndex) {
+        System.out.println(outputIndex);
+    }
+
 }

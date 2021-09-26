@@ -23,7 +23,7 @@ public class MainWindow implements TemperatureView {
 
             JPanel panel = new JPanel();
 
-            JLabel temperatureLabel = new JLabel("Ведите температуру: ");
+            JLabel temperatureLabel = new JLabel("Введите температуру: ");
 
             JTextField temperatureTextField = new JTextField(10);
 

@@ -30,4 +30,3 @@ public class Person {
         return String.format("(%s : Возраст %d )", name, age);
     }
 }
-

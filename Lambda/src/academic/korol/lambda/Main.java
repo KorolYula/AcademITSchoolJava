@@ -2,6 +2,7 @@ package academic.korol.lambda;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,11 +15,12 @@ public class Main {
                 new Person("Петр", 4)
         );
 
-        String allNames = persons.stream()
+        List<String> allNames = persons.stream()
                 .map(Person::getName)
                 .distinct()
-                .collect(Collectors.joining(", ", "Имена: ", "."));
-        System.out.println(allNames);
+                .collect(Collectors.toList());
+
+        System.out.println(allNames.stream().collect(Collectors.joining(", ", "Имена: ", ".")));
 
         persons.stream()
                 .filter(p -> p.getAge() < 18)
@@ -26,10 +28,10 @@ public class Main {
                 .average()
                 .ifPresent(x -> System.out.println("Средний возраст людей, младше 18 лет: " + x));
 
-        Map<String, Double> nameGrouping = persons.stream()
+        Map<String, Double> byNameMiddleAges = persons.stream()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.averagingInt(Person::getAge)));
 
-        nameGrouping.forEach((name, averageAge) ->
+        byNameMiddleAges.forEach((name, averageAge) ->
                 System.out.printf(" %s: средний возраст %.2f%n", name, averageAge));
 
         String middleAgedPeopleNames = persons.stream()
@@ -40,4 +42,3 @@ public class Main {
         System.out.println(middleAgedPeopleNames);
     }
 }
-

@@ -12,44 +12,7 @@ public class TemperatureModelImp implements TemperatureModel {
     public double outputTemperature;
     private final List<TemperatureModelListener> listeners = new ArrayList<>();
 
-   /* public TemperatureModelImp() {
-        this.inputTemperature = 0;
-        this.celsiusTemperature = 0;
-        this.outputTemperature = 0;
-        for (TemperatureModelListener listener : listeners) {
-            listener.temperatureChanded(outputTemperature);
-        }
-    }
-
-
-    public void setInputTemperature(double temperature) {
-        inputTemperature = temperature;
-    }
-
-    public void convertToCelsius(int inputIndex) {
-        ArrayList<double[]> conversionToCelsiusFactors = new ArrayList<>();
-        conversionToCelsiusFactors.add(new double[]{1, 0});
-        conversionToCelsiusFactors.add(new double[]{5.0 / 9.0, -160.0 / 9.0});
-        conversionToCelsiusFactors.add(new double[]{1, -273, 15});
-
-        celsiusTemperature = conversionToCelsiusFactors.get(inputIndex)[0] * inputTemperature + conversionToCelsiusFactors.get(inputIndex)[1];
-
-    }
-
-    public void convertFromCelsius(int outputIndex) {
-        ArrayList<double[]> conversionFromCelsiusFactors = new ArrayList<>();
-        conversionFromCelsiusFactors.add(new double[]{1, 0});
-        conversionFromCelsiusFactors.add(new double[]{9.0 / 5.0, 32});
-        conversionFromCelsiusFactors.add(new double[]{1, 273, 15});
-
-        outputTemperature = conversionFromCelsiusFactors.get(outputIndex)[0] * celsiusTemperature + conversionFromCelsiusFactors.get(outputIndex)[1];
-
-        for (TemperatureModelListener listener : listeners) {
-            listener.temperatureChanded(outputTemperature);
-        }
-    }*/
-
-    public void convertTemperature(int inputIndex,int outputIndex,double temperature){
+    public void convertTemperature(int inputIndex, int outputIndex, double temperature) {
         ArrayList<double[]> conversionToCelsiusFactors = new ArrayList<>();
         conversionToCelsiusFactors.add(new double[]{1, 0});
         conversionToCelsiusFactors.add(new double[]{5.0 / 9.0, -160.0 / 9.0});
@@ -68,6 +31,7 @@ public class TemperatureModelImp implements TemperatureModel {
             listener.temperatureChanded(outputTemperature);
         }
     }
+
     @Override
     public void addTemperatureModelLisrener(TemperatureModelListener listener) {
         listeners.add(listener);

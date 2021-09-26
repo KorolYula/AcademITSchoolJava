@@ -2,6 +2,7 @@ package view;
 
 import academic.korol.temperature.TemperatureController;
 import academic.korol.temperature.TemperatureView;
+
 import javax.swing.*;
 
 public class MainWindow implements TemperatureView {
@@ -16,41 +17,37 @@ public class MainWindow implements TemperatureView {
     public void start() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Перевод температур");
-            frame.setSize(600, 200);
+            frame.setSize(640, 200);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             JPanel panel = new JPanel();
-            JTextField temperatureTextField = new JTextField(10);
+
             JLabel temperatureLabel = new JLabel("Ведите температуру: ");
-           // panel.add(temperatureLabel);
-            String[] temperatureScales = {"шкала Цельсия",
+
+            JTextField temperatureTextField = new JTextField(10);
+
+            String[] temperatureScales = {
+                    "шкала Цельсия",
                     "шкала Фаренгейта",
                     "шкала Кельвина"};
 
-            JLabel choiseInputScale = new JLabel();
-            // panel.add(choiseInputScale);
-            choiseInputScale.setText("Шкала вводы температура :");
+            JLabel choiseInputScale = new JLabel("Шкала вводы температура :");
             JComboBox<String> inputScale = new JComboBox<>(temperatureScales);
-            // panel.add(inputScale);
 
-            JLabel choiseOutputScale = new JLabel();
-            //  panel.add(choiseOutputScale);
-            choiseOutputScale.setText("Шкала вывода температуры:");
-
+            JLabel choiseOutputScale = new JLabel("Шкала вывода температуры:");
             JComboBox<String> outputScale = new JComboBox<>(temperatureScales);
-            // panel.add(outputScale);
+
             JButton convertTemperatureButton = new JButton("Перевести температуру");
+
             outputTemperatureLabel = new JLabel();
 
-            //_______________________________________выставляю layout
             GroupLayout layout = new GroupLayout(panel);
             panel.setLayout(layout);
             layout.setAutoCreateGaps(true);
             layout.setAutoCreateContainerGaps(true);
             GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
 
-            // layout.setHorizontalGroup(layout.createSequentialGroup()
             hGroup.addGroup(layout.createParallelGroup()
                     .addComponent(temperatureLabel)
                     .addComponent(choiseInputScale)
@@ -79,7 +76,6 @@ public class MainWindow implements TemperatureView {
                     .addComponent(outputTemperatureLabel));
             layout.setVerticalGroup(vGroup);
 
-
             convertTemperatureButton.addActionListener(e -> {
                 try {
                     double temperature = Double.parseDouble(temperatureTextField.getText());
@@ -91,9 +87,6 @@ public class MainWindow implements TemperatureView {
                     JOptionPane.showMessageDialog(frame, "Ошибка ввода данных", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
-            // panel.add(convertTemperatureButton);
-
-            // panel.add(outputTemperatureLabel, BorderLayout.SOUTH);
             frame.add(panel);
             frame.setVisible(true);
         });

@@ -5,17 +5,9 @@ public class TemperatureController {
 
     public TemperatureController(TemperatureModel model) {
         this.model = model;
-           }
-
-    public void convertTemperature(int inputIndex,int outputIndex,double temperature) {
-        model.convertTemperature( inputIndex, outputIndex, temperature);
     }
 
-   /* public void setInputScale(int inputIndex) {
-        model.convertToCelsius(inputIndex);
+    public void convertTemperature(int inputIndex, int outputIndex, double temperature) {
+        model.convertTemperature(inputIndex, outputIndex, temperature);
     }
-
-    public void setOutputScale(int outputIndex) {
-        model.convertFromCelsius(outputIndex);
-    }*/
 }

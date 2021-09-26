@@ -1,11 +1,13 @@
 package academic.korol.temperature;
 
-import java.util.ArrayList;
-
 public interface TemperatureModel {
+   // void setInputTemperature(double temperature);
 
-          double getFahrenheitTemperature() ;
-     double getCelsiusTemperature();
-     void setCelsiusTemperature(double celsiusTemperature);
-     void addTemperatureModelLisrener(TemperatureModelListener listener);
+   // void convertToCelsius(int inputIndex);
+
+   // void convertFromCelsius(int outputIndex);
+
+   void addTemperatureModelLisrener(TemperatureModelListener listener);
+
+    void convertTemperature(int inputIndex, int outputIndex, double temperature);
 }

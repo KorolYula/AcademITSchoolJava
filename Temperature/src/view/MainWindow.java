@@ -1,17 +1,13 @@
 package view;
 
 import academic.korol.temperature.TemperatureController;
-import academic.korol.temperature.TemperatureModelListener;
 import academic.korol.temperature.TemperatureView;
-
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainWindow implements TemperatureView {
     private JFrame frame;
     private final TemperatureController controller;
-    private JLabel fahrienheitTemperatureLabel;
+    private JLabel outputTemperatureLabel;
 
     public MainWindow(TemperatureController controller) {
         this.controller = controller;
@@ -27,11 +23,11 @@ public class MainWindow implements TemperatureView {
 
             JPanel panel = new JPanel();
 
-            JTextField celsiusTemperatureTextField = new JTextField(10);
-            panel.add(celsiusTemperatureTextField);
+            JTextField temperatureTextField = new JTextField(10);
+            panel.add(temperatureTextField);
 
-            JLabel celsiusTemperatureLabel = new JLabel("Ведите температуру: ");
-            panel.add(celsiusTemperatureLabel);
+            JLabel temperatureLabel = new JLabel("Ведите температуру: ");
+            panel.add(temperatureLabel);
 
             String [] temperatureScales ={ "шкала Цельсия",
                     "шкала Фаренгейта",
@@ -40,14 +36,14 @@ public class MainWindow implements TemperatureView {
             JLabel choiseInputScale = new JLabel();
             panel.add(choiseInputScale);
             choiseInputScale.setText("Выберите температуры какой шкалы вы вводите:");
-
             JComboBox <String> inputScale = new JComboBox<>(temperatureScales);
             panel.add(inputScale);
             inputScale.addActionListener(e -> {
 
-                int inputIndex = inputScale.getSelectedIndex();
-                controller.setInputScale(inputIndex);
+               // int inputIndex = inputScale.getSelectedIndex();
+             // controller.setInputScale(inputIndex);
             });
+
             JLabel choiseOutputScale = new JLabel();
             panel.add(choiseOutputScale);
             choiseOutputScale.setText("Выберите температуру какой шкалы вы хотите расчитать^");
@@ -56,26 +52,27 @@ public class MainWindow implements TemperatureView {
             panel.add(outputScale);
             outputScale.addActionListener(e -> {
 
-                 int outputIndex = outputScale.getSelectedIndex();
-                controller.setOutputScale(outputIndex);
+                // int outputIndex = outputScale.getSelectedIndex();
+               // controller.setOutputScale(outputIndex);
             });
-
 
             JButton convertTemperatureButton = new JButton("Перевести");
             convertTemperatureButton.addActionListener(e -> {
                 try {
-                    double celsiusTemperature = Double.parseDouble(celsiusTemperatureTextField.getText());
-                    //TODO metod controllera
-                    controller.convertTemperature(celsiusTemperature);
-
+                    double temperature = Double.parseDouble(temperatureTextField.getText());
+                    int outputIndex = outputScale.getSelectedIndex();
+                    int inputIndex = inputScale.getSelectedIndex();
+                    //controller.setInputScale(inputIndex);
+                   // controller.setOutputScale(outputIndex);
+                    controller.convertTemperature(inputIndex,outputIndex,temperature);
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Ошибка ввода данных", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
             panel.add(convertTemperatureButton);
-            fahrienheitTemperatureLabel = new JLabel();
-            panel.add(fahrienheitTemperatureLabel);
+            outputTemperatureLabel = new JLabel();
+            panel.add(outputTemperatureLabel);
 
 
             frame.add(panel);
@@ -85,8 +82,8 @@ public class MainWindow implements TemperatureView {
     }
 
     @Override
-    public void temperatureChanded(double fahrenheitTemperature) {
-        fahrienheitTemperatureLabel.setText("Температура в фаригнейтах" + fahrenheitTemperature);
+    public void temperatureChanded(double outputTemperature) {
+        outputTemperatureLabel.setText("Температура " + outputTemperature);
     }
 }
 

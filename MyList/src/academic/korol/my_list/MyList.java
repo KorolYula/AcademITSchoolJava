@@ -1,13 +1,13 @@
 package academic.korol.my_list;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class MyList<T> {
     private ListNode<T> head;
     private int length;
 
     public MyList() {
-        length = 0;
     }
 
     public MyList(T data) {
@@ -37,13 +37,13 @@ public class MyList<T> {
             throw new IndexOutOfBoundsException("Индекс " + index + " должен быть >= 0");
         }
 
-        if (index >= maxPossibleIndex) {
-            throw new IndexOutOfBoundsException("Индекс " + index + " выходит за пределы длины списка " + length);
+        if (index > maxPossibleIndex) {
+            throw new IndexOutOfBoundsException("Индекс " + index + "  должен быть <= " + maxPossibleIndex);
         }
     }
 
-    public ListNode<T> getNode(int index) {
-        checkIndex(index, length);
+    private ListNode<T> getNode(int index) {
+        checkIndex(index, length + 1);
 
         ListNode<T> node = head;
 
@@ -54,7 +54,6 @@ public class MyList<T> {
         return node;
     }
 
-
     public T getData(int index) {
         return getNode(index).getData();
     }
@@ -64,7 +63,7 @@ public class MyList<T> {
     }
 
     public void add(int index, T data) {
-        checkIndex(index, length + 1);
+        checkIndex(index, length + 2);
 
         if (index == 0) {
             addFirst(data);
@@ -98,30 +97,30 @@ public class MyList<T> {
             return false;
         }
 
-        if (head.getData().equals(data)) {
+        if (Objects.equals(head.getData(), data)) {
             deleteFirst();
             return true;
         }
 
-        ListNode<T> node = head.getNext();
+        ListNode<T> currentNode = head.getNext();
         ListNode<T> previousNode = head;
 
-        for (int i = 0; i < length - 1; i++) {
-            if (data == null && node.getData() == null || node.getData() != null && node.getData().equals(data)) {
-                previousNode.setNext(node.getNext());
+        for (int i = 1; i < length; i++) {
+            if ((data == null && currentNode.getData() == null) || (currentNode.getData() != null && currentNode.getData().equals(data))) {
+                previousNode.setNext(currentNode.getNext());
                 length--;
                 return true;
             }
 
-            previousNode = node;
-            node = node.getNext();
+            previousNode = currentNode;
+            currentNode = currentNode.getNext();
         }
 
         return false;
     }
 
     public T delete(int index) {
-        checkIndex(index, length);
+        checkIndex(index, length + 1);
 
         if (index == 0) {
             return deleteFirst();
@@ -130,7 +129,7 @@ public class MyList<T> {
         ListNode<T> previousNode = head;
         ListNode<T> currentNode = head.getNext();
 
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 1; i < index; i++) {
             previousNode = currentNode;
             currentNode = currentNode.getNext();
         }
@@ -141,12 +140,11 @@ public class MyList<T> {
         return deletedData;
     }
 
-    public void revers() {
+    public void reverse() {
         ListNode<T> previousNode = null;
-        ListNode<T> nextNode;
 
         for (ListNode<T> currentNode = head; currentNode != null; ) {
-            nextNode = currentNode.getNext();
+            ListNode<T> nextNode = currentNode.getNext();
             currentNode.setNext(previousNode);
             previousNode = currentNode;
             currentNode = nextNode;
@@ -173,6 +171,10 @@ public class MyList<T> {
     }
 
     public String toString() {
+        if (length == 0) {
+            return "[]";
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
 
@@ -182,6 +184,7 @@ public class MyList<T> {
         }
 
         stringBuilder.setCharAt(stringBuilder.length() - 2, ']');
+        stringBuilder.deleteCharAt(stringBuilder.length());
 
         return stringBuilder.toString();
     }

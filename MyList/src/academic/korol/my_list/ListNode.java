@@ -31,4 +31,3 @@ class ListNode<T> {
         this.next = next;
     }
 }
-

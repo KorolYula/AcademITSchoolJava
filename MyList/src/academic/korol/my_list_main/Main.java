@@ -31,7 +31,7 @@ public class Main {
         System.out.println(myList.delete(null));
         System.out.println(myList);
 
-        myList.revers();
+        myList.reverse();
         System.out.println(myList);
     }
 }

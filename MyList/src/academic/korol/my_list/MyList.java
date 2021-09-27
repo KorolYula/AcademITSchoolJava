@@ -184,7 +184,7 @@ public class MyList<T> {
         }
 
         stringBuilder.setCharAt(stringBuilder.length() - 2, ']');
-        stringBuilder.deleteCharAt(stringBuilder.length());
+        stringBuilder.deleteCharAt(stringBuilder.length()-1);
 
         return stringBuilder.toString();
     }

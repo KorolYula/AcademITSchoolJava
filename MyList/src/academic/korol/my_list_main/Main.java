@@ -33,5 +33,8 @@ public class Main {
 
         myList.reverse();
         System.out.println(myList);
+
+        MyList<String> emptyList = new MyList<>();
+        System.out.println(emptyList);
     }
 }

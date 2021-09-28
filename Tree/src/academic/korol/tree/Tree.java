@@ -1,12 +1,25 @@
 package academic.korol.tree;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.function.Consumer;
 
-public class Tree<T extends Comparable<T>> {
+public class Tree<T> {
     private TreeNode<T> root;
+    private Comparator comparator;
     int size;
+
+    public Tree(Comparator<T> comparator) {
+        this.comparator = comparator;
+    }
+    public Tree () {
+            //TODO приведение к Comparable<T>.
+        };
+    }
+
+
+
 
     public int getSize() {
         return size;
@@ -15,7 +28,7 @@ public class Tree<T extends Comparable<T>> {
     private TreeNode<T> getNode(T element) {
         TreeNode<T> currentNode = root;
         while (currentNode != null) {
-            int compare = currentNode.getData().compareTo(element);
+            int compare =comparator.compare (currentNode.getData(),element);
             if (compare == 0) {
                 return currentNode;
             }

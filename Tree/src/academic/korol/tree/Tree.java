@@ -2,18 +2,25 @@ package academic.korol.tree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.function.Consumer;
 
 public class Tree<T extends Comparable<T>> {
     private TreeNode<T> root;
+    int size;
 
-    public TreeNode<T> getNode(T element) {
+    public int getSize() {
+        return size;
+    }
+
+    private TreeNode<T> getNode(T element) {
         TreeNode<T> currentNode = root;
         while (currentNode != null) {
-            if (currentNode.getData().compareTo(element) == 0) {
+            int compare = currentNode.getData().compareTo(element);
+            if (compare == 0) {
                 return currentNode;
             }
 
-            if (currentNode.getData().compareTo(element) < 0) {
+            if (compare < 0) {
                 currentNode = currentNode.getLeft();
             } else {
                 currentNode = currentNode.getRight();
@@ -22,21 +29,23 @@ public class Tree<T extends Comparable<T>> {
         return null;
     }
 
-    public void addNode(T element) {
+    public void add(T element) {
         if (root == null) {
             root = new TreeNode<>(element);
+            size++;
             return;
         }
 
         TreeNode<T> currentNode = root;
 
         while (currentNode != null) {
-            if (currentNode.getData().compareTo(element) < 0) {
+            if (currentNode.getData().compareTo(element) > 0) {
 
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                 } else {
                     TreeNode<T> newNode = new TreeNode<>(element);
+                    size++;
                     currentNode.setLeft(newNode);
                     return;
                 }
@@ -46,6 +55,7 @@ public class Tree<T extends Comparable<T>> {
                     currentNode = currentNode.getRight();
                 } else {
                     TreeNode<T> newNode = new TreeNode<>(element);
+                    size++;
                     currentNode.setRight(newNode);
                     return;
                 }
@@ -53,7 +63,7 @@ public class Tree<T extends Comparable<T>> {
         }
     }
 
-    public void removeCurrentNode(TreeNode<T> parentNode, TreeNode<T> currentNode) {
+    private void removeCurrentNode(TreeNode<T> parentNode, TreeNode<T> currentNode) {
         if (currentNode.getRight() == null && currentNode.getLeft() == null) { //если лист
             if (parentNode.getRight() == currentNode) {
                 parentNode.setRight(null);
@@ -80,7 +90,7 @@ public class Tree<T extends Comparable<T>> {
             TreeNode<T> leftList = currentNode.getRight();
             TreeNode<T> leftListParent = currentNode;
             if (leftList.getLeft() == null) {
-                currentNode.setData(leftList.getData());
+                leftList.setLeft(currentNode.getLeft());
                 parentNode.setRight(leftList);
             } else {
                 while (leftList.getLeft() != null) {
@@ -88,12 +98,19 @@ public class Tree<T extends Comparable<T>> {
                     leftList = leftList.getLeft();
                 }
                 leftListParent.setLeft(leftList.getRight());
-                currentNode.setData(leftList.getData());
+                leftList.setLeft(currentNode.getLeft());
+                leftList.setRight(currentNode.getRight());
+                currentNode = leftList;
+
             }
         }
+        size--;
     }
 
     public void removeRoot() {
+        if (root.getLeft() == null && root.getRight() == null) {
+            root = null;
+        }
         if (root.getLeft() == null) {
             root = root.getRight();
         }
@@ -105,16 +122,26 @@ public class Tree<T extends Comparable<T>> {
         TreeNode<T> leftList = root.getRight();
         TreeNode<T> leftListParent = root;
 
-        while (leftList.getLeft() != null) {
-            leftListParent = leftList;
-            leftList = leftList.getLeft();
-        }
+        if (leftList.getLeft() == null) {
+            leftList.setLeft(root.getLeft());
 
-        leftListParent.setLeft(leftList.getRight());
-        root.setData(leftList.getData());
+            root = leftList;
+        } else {
+            while (leftList.getLeft() != null) {
+                leftListParent = leftList;
+                leftList = leftList.getLeft();
+            }
+
+            leftListParent.setLeft(leftList.getRight());
+            leftList.setLeft(root.getLeft());
+            leftList.setRight(root.getRight());
+            root = leftList;
+
+        }
+        size--;
     }
 
-    public boolean removeNode(T element) {
+    public boolean remove(T element) {
         if (root.getData().compareTo(element) == 0) {
             removeRoot();
             return true;
@@ -140,27 +167,43 @@ public class Tree<T extends Comparable<T>> {
         return false;
     }
 
-    //обход дерева в глуину с рекурсией
-    public int depthFirstRecursiveSearch(TreeNode<T> node) {
+    //обход дерева в глубину с рекурсией
+    public void depthFirstRecursiveSearch(TreeNode<T> node) {
         if (node == null) {
-            return 0;
+            return;
         }
+        Consumer<T> consumer = new Consumer<T>() {
+            @Override
+            public void accept(T t) {
+                System.out.println(t);
+            }
+        };
+        consumer.accept(node.getData());
 
-        return 1 + depthFirstRecursiveSearch(node.getLeft()) + depthFirstRecursiveSearch(node.getRight());
+
+        depthFirstRecursiveSearch(node.getLeft());
+        depthFirstRecursiveSearch(node.getRight());
     }
 
-    public int getSizeByDepthFirstRecursiveSearch(Tree<T> tree) {
-        return depthFirstRecursiveSearch(root);
+    public  void getSizeByDepthFirstRecursiveSearch() {
+        depthFirstRecursiveSearch(root);
     }
 
     //обход дерева в ширину
-    public int breadthFirstSearch() {
+    public void breadthFirstSearch() {
         LinkedList<TreeNode<T>> queue = new LinkedList<>();
-        int treeSize = 0;
         queue.addFirst(root);
 
         while (!queue.isEmpty()) {
             TreeNode<T> nodeCurrent = queue.remove();
+            //работа в узле  Consumer<T>
+            Consumer<T> consumer = new Consumer<T>() {
+                @Override
+                public void accept(T t) {
+                    System.out.println(t);
+                }
+            };
+            consumer.accept(nodeCurrent.getData());
 
             if (nodeCurrent.getLeft() != null) {
                 queue.add(nodeCurrent.getLeft());
@@ -170,31 +213,39 @@ public class Tree<T extends Comparable<T>> {
                 queue.add(nodeCurrent.getRight());
             }
 
-            treeSize++;
         }
-        return treeSize;
+
     }
 
     //обход в глубину без рекурсии
-    public int depthFirstSearch() {
-        int treeSize = 0;
+    public void depthFirstSearch() {
         ArrayList<TreeNode<T>> stack = new ArrayList<>();
+        if (root == null) {
+            return;
+        }
         stack.add(root);
-
         while (!stack.isEmpty()) {
             TreeNode<T> nodeCurrent = stack.remove(stack.size() - 1);
-
-            if (nodeCurrent.getLeft() != null) {
-                stack.add(nodeCurrent.getLeft());
-            }
+            //работа в узле  Consumer<T>
+            Consumer<T> consumer = new Consumer<T>() {
+                @Override
+                public void accept(T t) {
+                    System.out.println(t);
+                }
+            };
+            consumer.accept(nodeCurrent.getData());
 
             if (nodeCurrent.getRight() != null) {
                 stack.add(nodeCurrent.getRight());
             }
 
-            treeSize++;
+            if (nodeCurrent.getLeft() != null) {
+                stack.add(nodeCurrent.getLeft());
+            }
+
+
         }
 
-        return treeSize;
     }
+
 }

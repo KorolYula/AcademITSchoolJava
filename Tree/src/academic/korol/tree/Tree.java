@@ -7,18 +7,18 @@ import java.util.function.Consumer;
 
 public class Tree<T> {
     private TreeNode<T> root;
-    private Comparator comparator;
+    private final Comparator<T> comparator;
     int size;
 
     public Tree(Comparator<T> comparator) {
         this.comparator = comparator;
     }
 
-   public Tree() {
+    public Tree() {
         this.comparator = new Comparator<T>() {
             @Override
-            public int compare(T t1, T t2) {
-                return compare((Comparable <T>) t1, (Comparable <T>) t2);
+            public int compare(T o1, T o2) {
+                return ((Comparable<T>) o1).compareTo(o2);
             }
         };
     }
@@ -30,7 +30,7 @@ public class Tree<T> {
     private TreeNode<T> getNode(T element) {
         TreeNode<T> currentNode = root;
         while (currentNode != null) {
-            int compare =comparator.compare (currentNode.getData(),element);
+            int compare = comparator.compare(currentNode.getData(), element);
             if (compare == 0) {
                 return currentNode;
             }
@@ -44,17 +44,20 @@ public class Tree<T> {
         return null;
     }
 
-    public void add(T element) {
+    public boolean add(T element) {
+        if (element == null) {
+            return false;
+        }
         if (root == null) {
             root = new TreeNode<>(element);
             size++;
-            return;
+            return true;
         }
 
         TreeNode<T> currentNode = root;
 
         while (currentNode != null) {
-            if (currentNode.getData().compareTo(element) > 0) {
+            if (comparator.compare(currentNode.getData(), element) > 0) {
 
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
@@ -62,7 +65,7 @@ public class Tree<T> {
                     TreeNode<T> newNode = new TreeNode<>(element);
                     size++;
                     currentNode.setLeft(newNode);
-                    return;
+                    return true;
                 }
 
             } else {
@@ -72,10 +75,11 @@ public class Tree<T> {
                     TreeNode<T> newNode = new TreeNode<>(element);
                     size++;
                     currentNode.setRight(newNode);
-                    return;
+                    return true;
                 }
             }
         }
+      //  return true;
     }
 
     private void removeCurrentNode(TreeNode<T> parentNode, TreeNode<T> currentNode) {
@@ -200,7 +204,7 @@ public class Tree<T> {
         depthFirstRecursiveSearch(node.getRight());
     }
 
-    public  void getSizeByDepthFirstRecursiveSearch() {
+    public void getSizeByDepthFirstRecursiveSearch() {
         depthFirstRecursiveSearch(root);
     }
 

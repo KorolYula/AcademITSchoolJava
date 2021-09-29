@@ -3,9 +3,10 @@ package academic.korol.tree_main;
 import academic.korol.tree.Tree;
 
 import javax.swing.tree.TreeNode;
+import java.util.function.Consumer;
 
 public class Main {
-    public static void main(String[] args){
+    public static <T> void main(String[] args) {
         Tree<Integer> tree = new Tree<>();
         tree.add(8);
         tree.add(3);
@@ -16,19 +17,35 @@ public class Main {
         tree.add(13);
         tree.add(7);
         tree.add(4);
-         tree.add(16);
-        System.out.println("Размер дерева"+tree.getSize());
+        tree.add(16);
+        System.out.println("Размер дерева" + tree.getSize());
         System.out.println();
 
-        tree.depthFirstSearch();
+        tree.depthFirstSearch(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer i) {
+                System.out.println(i);
+            }
+        });
         // tree.removeRoot();
-        System.out.println("Размер дерева"+tree.getSize());
+        System.out.println("Размер дерева" + tree.getSize());
         System.out.println("Обход в глубину без рекурсии");
 
-        tree.depthFirstSearch();
+
+        tree.depthFirstSearch ( new Consumer<Integer>() {
+            @Override
+            public void accept(Integer i) {
+                System.out.println(i);
+            }
+        });
         System.out.println("Обход в ширину");
 
-        tree.breadthFirstSearch();
+        tree.breadthFirstSearch(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer i) {
+                System.out.println(i);
+            }
+        });
         System.out.println("Обход в глубину с рекурсией");
 
         tree.getSizeByDepthFirstRecursiveSearch();

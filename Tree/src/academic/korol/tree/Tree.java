@@ -13,13 +13,15 @@ public class Tree<T> {
     public Tree(Comparator<T> comparator) {
         this.comparator = comparator;
     }
-    public Tree () {
-            //TODO приведение к Comparable<T>.
+
+   public Tree() {
+        this.comparator = new Comparator<T>() {
+            @Override
+            public int compare(T t1, T t2) {
+                return compare((Comparable <T>) t1, (Comparable <T>) t2);
+            }
         };
     }
-
-
-
 
     public int getSize() {
         return size;
@@ -203,19 +205,14 @@ public class Tree<T> {
     }
 
     //обход дерева в ширину
-    public void breadthFirstSearch() {
+    public void breadthFirstSearch(Consumer<T> consumer) {
         LinkedList<TreeNode<T>> queue = new LinkedList<>();
         queue.addFirst(root);
 
         while (!queue.isEmpty()) {
             TreeNode<T> nodeCurrent = queue.remove();
             //работа в узле  Consumer<T>
-            Consumer<T> consumer = new Consumer<T>() {
-                @Override
-                public void accept(T t) {
-                    System.out.println(t);
-                }
-            };
+
             consumer.accept(nodeCurrent.getData());
 
             if (nodeCurrent.getLeft() != null) {
@@ -230,8 +227,9 @@ public class Tree<T> {
 
     }
 
+
     //обход в глубину без рекурсии
-    public void depthFirstSearch() {
+    public void depthFirstSearch(Consumer<T> consumer) {
         ArrayList<TreeNode<T>> stack = new ArrayList<>();
         if (root == null) {
             return;
@@ -240,12 +238,7 @@ public class Tree<T> {
         while (!stack.isEmpty()) {
             TreeNode<T> nodeCurrent = stack.remove(stack.size() - 1);
             //работа в узле  Consumer<T>
-            Consumer<T> consumer = new Consumer<T>() {
-                @Override
-                public void accept(T t) {
-                    System.out.println(t);
-                }
-            };
+
             consumer.accept(nodeCurrent.getData());
 
             if (nodeCurrent.getRight() != null) {

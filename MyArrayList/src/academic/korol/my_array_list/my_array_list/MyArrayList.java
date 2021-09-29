@@ -5,7 +5,7 @@ import java.util.*;
 public class MyArrayList<E> implements List<E> {
     private E[] items;
     private int size;
-    private int modCount;
+    private int modificationСounter;
     private final int initialCapacity = 10;
 
     public MyArrayList() {
@@ -78,7 +78,7 @@ public class MyArrayList<E> implements List<E> {
     public Iterator<E> iterator() {
         return new Iterator<>() {
             private int currentIndex = -1;
-            private final int fixModCount = modCount;
+            private final int fixModCount = modificationСounter;
 
             @Override
             public boolean hasNext() {
@@ -91,7 +91,7 @@ public class MyArrayList<E> implements List<E> {
                     throw new NoSuchElementException();
                 }
 
-                if (fixModCount != modCount) {
+                if (fixModCount != modificationСounter) {
                     throw new ConcurrentModificationException("Список был изменен!");
                 }
 
@@ -165,7 +165,7 @@ public class MyArrayList<E> implements List<E> {
 
         items[index] = element;
         size++;
-        modCount++;
+        modificationСounter++;
     }
 
     @Override
@@ -212,7 +212,7 @@ public class MyArrayList<E> implements List<E> {
         }
 
         size = 0;
-        modCount++;
+        modificationСounter++;
     }
 
     private void increaseCapacity() {
@@ -232,7 +232,7 @@ public class MyArrayList<E> implements List<E> {
 
         items[size - 1] = null;
         --size;
-        modCount++;
+        modificationСounter++;
         return removedItem;
     }
 

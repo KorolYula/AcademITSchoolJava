@@ -5,14 +5,15 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 public class Main {
-    public static ArrayList<String> readStringFromFile(String fileName) throws IOException {
+    public static ArrayList<String> readStringsArrayFromFile(String fileName) throws IOException {
         ArrayList<String> fileStrings = new ArrayList<>();
 
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        String string;
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String string;
 
-        while ((string = reader.readLine()) != null) {
-            fileStrings.add(string);
+            while ((string = reader.readLine()) != null) {
+                fileStrings.add(string);
+            }
         }
 
         return fileStrings;
@@ -20,10 +21,11 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            System.out.println(readStringFromFile("input.txt"));
+            System.out.println(readStringsArrayFromFile("input.txt"));
         } catch (IOException e) {
-            System.out.println("Файл не найден");
+            System.out.println("Ошибка при чтении фаила"+e.getMessage());
         }
+
         ArrayList<Integer> numbers1 = new ArrayList<>(Arrays.asList(1, 5, 2, 4, 3, 3, 8, 12, 12, 13));
         System.out.println(numbers1);
 
@@ -49,8 +51,3 @@ public class Main {
         System.out.println(uniqueNumbers);
     }
 }
-
-
-
-
-

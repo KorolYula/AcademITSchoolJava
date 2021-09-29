@@ -31,7 +31,5 @@ public class Main {
         list2.add(2);
         list2.add(8);
         System.out.println(Arrays.toString(list2.toArray()));
-
     }
 }
-

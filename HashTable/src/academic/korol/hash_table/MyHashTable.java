@@ -4,10 +4,9 @@ import java.util.*;
 
 public class MyHashTable<T> implements Collection<T> {
     private LinkedList<T>[] lists;
-    // private int hashTableSize;
     private int size;
-    private int myHashListSize = 20;
-    private int modificationСounter;
+    private int myHashListSize = 10;
+    private int modificationCounter;
 
     public MyHashTable(int hashListSize) {
         if (hashListSize <= 0) {
@@ -43,7 +42,7 @@ public class MyHashTable<T> implements Collection<T> {
         for (int i = 0; i <= myHashListSize; i++) {
             lists[i] = null;
         }
-        size=0;
+        size = 0;
     }
 
     @Override
@@ -52,7 +51,7 @@ public class MyHashTable<T> implements Collection<T> {
             int counter = 0;
             int arrayIndex = 0;
             int listIndex = -1;
-            private final int fixModCount = modificationСounter;
+            private final int fixModCount = modificationCounter;
 
             @Override
             public boolean hasNext() {
@@ -65,7 +64,7 @@ public class MyHashTable<T> implements Collection<T> {
                     throw new NoSuchElementException();
                 }
 
-                if (fixModCount != modificationСounter) {
+                if (fixModCount != modificationCounter) {
                     throw new ConcurrentModificationException("Таблица была изменена!");
                 }
 
@@ -106,12 +105,12 @@ public class MyHashTable<T> implements Collection<T> {
         int hashIndex = getHashIndex(t);
 
         if (lists[hashIndex] == null) {
-            lists[hashIndex] = new LinkedList<T>();
+            lists[hashIndex] = new LinkedList<>();
         }
 
         lists[hashIndex].add(t);
         size++;
-        modificationСounter++;
+        modificationCounter++;
         return true;
     }
 
@@ -129,7 +128,7 @@ public class MyHashTable<T> implements Collection<T> {
 
         if (lists[hashIndex].remove(o)) {
             size--;
-            modificationСounter++;
+            modificationCounter++;
             return true;
         }
         return false;
@@ -171,7 +170,7 @@ public class MyHashTable<T> implements Collection<T> {
 
                 if (lists[hashIndex].removeAll((Collection<?>) element)) {
                     size--;
-                    modificationСounter++;
+                    modificationCounter++;
                     isRemove = true;
                 }
             }
@@ -184,59 +183,69 @@ public class MyHashTable<T> implements Collection<T> {
     public boolean retainAll(Collection<?> c) {
         boolean isDelete = false;
 
-        for (LinkedList<T> list:lists) {
-           if(list.retainAll(c)){
-               size--;
-               modificationСounter++;
-               isDelete=true;
-           }
+        for (LinkedList<T> list : lists) {
+            if (list.retainAll(c)) {
+                size--;
+                modificationCounter++;
+                isDelete = true;
+            }
         }
 
         return isDelete;
     }
 
-    //TODO правильно ли я за
     @Override
     public Object[] toArray() {
         Object[] objectsArray = new Object[size];
         int i = 0;
-        for (T t:this) {
-            objectsArray[i] = t;
+
+        for (T t : this) {
+            if (t != null) {
+                objectsArray[i] = t;
+            }
             i++;
         }
 
         return objectsArray;
     }
 
-    //TODO правильно ли я за
     @Override
-    public <E> E[] toArray(E[] a) {
-        if (a.length >= elementCount) {
-            int index = 0;
+    public <E> E[] toArray(E[] array) {
+        if (array.length >= size) {
+            System.arraycopy(this.toArray(), 0, array, 0, size);
 
-            for (Iterator<T> i = iterator(); i.hasNext(); ) {
-                a[index] = (E) i;
-                index++;
+            for (int i = size; i < array.length; i++) {
+                array[i] = null;
             }
-
-            for (int j = index + 1; j < a.length; j++) {
-                a[j] = null;
-            }
-
-            return a;
+            return array;
         }
-
-        E[] array = (E[]) new Object[elementCount];
-        int index = 0;
-
-        for (Iterator<T> i = iterator(); i.hasNext(); ) {
-            array[index] = (E) i;
-            index++;
-        }
-
-        return array;
+        return (E[]) Arrays.copyOf(this.toArray(), size, array.getClass());
     }
+
+    public String[] toStringHashTable() {
+        if (size == 0) {
+            return null;
+        }
+        String[] s = new String[myHashListSize];
+
+        // StringBuilder stringBuilder = new StringBuilder();
+        // stringBuilder.append("[");
+
+        for (int i = 0; i < myHashListSize; i++) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("[");
+            stringBuilder.append(i);
+            stringBuilder.append("-");
+            if (lists[i] == null) {
+                stringBuilder.append("null");
+            } else {
+                stringBuilder.append(lists[i].toString());
+            }
+            stringBuilder.append("]");
+            s[i] = stringBuilder.toString();
+        }
+        return s;
+    }
+
+
 }
-
-
-

@@ -35,7 +35,6 @@ public class MyHashTable<T> implements Collection<T> {
         return size == 0;
     }
 
-    //TODO правильно ли я за
     @Override
     public void clear() {
         if (size == 0) {
@@ -44,6 +43,7 @@ public class MyHashTable<T> implements Collection<T> {
         for (int i = 0; i <= myHashListSize; i++) {
             lists[i] = null;
         }
+        size=0;
     }
 
     @Override
@@ -86,6 +86,9 @@ public class MyHashTable<T> implements Collection<T> {
     //TODO правильно ли я за
     @Override
     public boolean contains(Object o) {
+        if (o == null) {
+            return false;
+        }
         int hashIndex = getHashIndex(o);
 
         if (lists[hashIndex] == null) {
@@ -95,53 +98,44 @@ public class MyHashTable<T> implements Collection<T> {
         return lists[hashIndex].contains(o);
     }
 
-    //TODO правильно ли я за
     @Override
     public boolean add(T t) {
+        if (t == null) {
+            return false;
+        }
         int hashIndex = getHashIndex(t);
 
         if (lists[hashIndex] == null) {
             lists[hashIndex] = new LinkedList<T>();
-            lists[hashIndex].add(t);
-            size++;
-            modificationСounter++;
-            return true;
         }
 
-        if (lists[hashIndex].contains(t)) {
+        lists[hashIndex].add(t);
+        size++;
+        modificationСounter++;
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        if (o == null) {
             return false;
         }
 
-
-    lists[hashIndex].add(t);
-
-    size++;
-    modificationСounter++;
-        return true;
-}
-
-    //TODO правильно ли я за
-    @Override
-    public boolean remove(Object o) {
         int hashIndex = getHashIndex(o);
 
         if (lists[hashIndex] == null) {
             return false;
         }
 
-        for (T e : lists[hashIndex]) {
-            if (e.equals(o)) {
-                lists[hashIndex].remove(o);
-                size--;
-                modificationСounter++;
-                return true;
-            }
+        if (lists[hashIndex].remove(o)) {
+            size--;
+            modificationСounter++;
+            return true;
         }
-
         return false;
     }
 
-    //TODO правильно ли я за
+    //DO правильно ли я за
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
@@ -153,61 +147,65 @@ public class MyHashTable<T> implements Collection<T> {
         return true;
     }
 
-    //TODO правильно ли я за
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        int additionsCount = 0;
+        boolean isAdd = false;
 
         for (T element : c) {
             if (add(element)) {
-                additionsCount++;
+                isAdd = true;
             }
         }
 
-        return additionsCount == 0;
+        return isAdd;
     }
 
-    //TODO правильно ли я за
+    //TODO счетчик size нужно уменьшить на несколько раз. Как узнать на сколько?
     @Override
     public boolean removeAll(Collection<?> c) {
-        int deletionsCount = 0;
+        boolean isRemove = false;
 
         for (Object element : c) {
-            if (remove(element)) {
-                deletionsCount++;
+            if (element != null) {
+                int hashIndex = getHashIndex(element);
+
+                if (lists[hashIndex].removeAll((Collection<?>) element)) {
+                    size--;
+                    modificationСounter++;
+                    isRemove = true;
+                }
             }
         }
-
-        return deletionsCount == 0;
+        return isRemove;
     }
 
-    //TODO правильно ли я за
+    //TODO счетчик size нужно уменьшить на несколько раз. Как узнать на сколько?
     @Override
     public boolean retainAll(Collection<?> c) {
-        int count = 0;
+        boolean isDelete = false;
 
-        for (Iterator<T> i = iterator(); i.hasNext(); ) {
-            if (!c.contains(i)) {
-                remove(i);
-                count++;
-            }
+        for (LinkedList<T> list:lists) {
+           if(list.retainAll(c)){
+               size--;
+               modificationСounter++;
+               isDelete=true;
+           }
         }
 
-        return count > 0;
+        return isDelete;
     }
 
     //TODO правильно ли я за
     @Override
     public Object[] toArray() {
-        Object[] o = new Object[size - 1];
-        int index = 0;
-
-        for (Iterator<T> i = iterator(); i.hasNext(); ) {
-            o[index] = i;
-            index++;
+        Object[] objectsArray = new Object[size];
+        int i = 0;
+        for (T t:this) {
+            objectsArray[i] = t;
+            i++;
         }
 
-        return o;
+        return objectsArray;
     }
 
     //TODO правильно ли я за

@@ -39,9 +39,11 @@ public class MyHashTable<T> implements Collection<T> {
         if (size == 0) {
             return;
         }
+
         for (int i = 0; i <= myHashListSize; i++) {
-            lists[i] = null;
+            lists[i].clear();
         }
+
         size = 0;
     }
 
@@ -68,26 +70,28 @@ public class MyHashTable<T> implements Collection<T> {
                     throw new ConcurrentModificationException("Таблица была изменена!");
                 }
 
-                listIndex++;
+                while (true) {
+                    listIndex++;
 
-                if (lists[arrayIndex] == null || lists[arrayIndex].size() == 0 || listIndex >= lists[arrayIndex].size()) {
-                    arrayIndex++;
-                    listIndex = 0;
+                    if (lists[arrayIndex] == null || lists[arrayIndex].size() == 0 || listIndex >= lists[arrayIndex].size()) {
+                        arrayIndex++;
+                        listIndex = -1;
+                    } else {
+                        counter++;
+                        break;
+                    }
                 }
-
-                counter++;
-
                 return lists[arrayIndex].get(listIndex);
             }
         };
     }
 
-    //TODO правильно ли я за
     @Override
     public boolean contains(Object o) {
         if (o == null) {
             return false;
         }
+
         int hashIndex = getHashIndex(o);
 
         if (lists[hashIndex] == null) {
@@ -102,6 +106,7 @@ public class MyHashTable<T> implements Collection<T> {
         if (t == null) {
             return false;
         }
+
         int hashIndex = getHashIndex(t);
 
         if (lists[hashIndex] == null) {
@@ -131,10 +136,10 @@ public class MyHashTable<T> implements Collection<T> {
             modificationCounter++;
             return true;
         }
+
         return false;
     }
 
-    //DO правильно ли я за
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
@@ -159,7 +164,6 @@ public class MyHashTable<T> implements Collection<T> {
         return isAdd;
     }
 
-    //TODO счетчик size нужно уменьшить на несколько раз. Как узнать на сколько?
     @Override
     public boolean removeAll(Collection<?> c) {
         boolean isRemove = false;
@@ -167,25 +171,30 @@ public class MyHashTable<T> implements Collection<T> {
         for (Object element : c) {
             if (element != null) {
                 int hashIndex = getHashIndex(element);
+                int oldListSize = lists[hashIndex].size();
 
                 if (lists[hashIndex].removeAll((Collection<?>) element)) {
-                    size--;
+                    int newListSize = lists[hashIndex].size();
+                    size = size + newListSize - oldListSize;
                     modificationCounter++;
                     isRemove = true;
                 }
             }
         }
+
         return isRemove;
     }
 
-    //TODO счетчик size нужно уменьшить на несколько раз. Как узнать на сколько?
     @Override
     public boolean retainAll(Collection<?> c) {
         boolean isDelete = false;
 
         for (LinkedList<T> list : lists) {
+            int oldListSize = list.size();
+
             if (list.retainAll(c)) {
-                size--;
+                int newListSize = list.size();
+                size = size + newListSize - oldListSize;
                 modificationCounter++;
                 isDelete = true;
             }
@@ -217,8 +226,10 @@ public class MyHashTable<T> implements Collection<T> {
             for (int i = size; i < array.length; i++) {
                 array[i] = null;
             }
+
             return array;
         }
+
         return (E[]) Arrays.copyOf(this.toArray(), size, array.getClass());
     }
 
@@ -226,26 +237,25 @@ public class MyHashTable<T> implements Collection<T> {
         if (size == 0) {
             return null;
         }
-        String[] s = new String[myHashListSize];
 
-        // StringBuilder stringBuilder = new StringBuilder();
-        // stringBuilder.append("[");
+        String[] s = new String[myHashListSize];
 
         for (int i = 0; i < myHashListSize; i++) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("[");
             stringBuilder.append(i);
             stringBuilder.append("-");
+
             if (lists[i] == null) {
                 stringBuilder.append("null");
             } else {
                 stringBuilder.append(lists[i].toString());
             }
+
             stringBuilder.append("]");
             s[i] = stringBuilder.toString();
         }
+
         return s;
     }
-
-
 }

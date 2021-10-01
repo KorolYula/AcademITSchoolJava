@@ -117,14 +117,14 @@ public class Matrix {
         }
     }
 
-    public Matrix getTransposed() {
-        Matrix matrix = new Matrix(getColumnsCount(), getRowsCount());
+    public void getTransposed() {
+        Vector[] vectors = new Vector[getColumnsCount()];
 
         for (int i = 0; i < getColumnsCount(); i++) {
-            matrix.setRow(i, getColumn(i));
-        }
+            vectors[i] = getColumn(i);
+            }
 
-        return matrix;
+        rows = vectors;
     }
 
     public static Matrix getMinor(Matrix matrix, int index) {
@@ -162,7 +162,7 @@ public class Matrix {
         double determinant = 0;
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            determinant += Math.pow(-1, i ) * matrix.getColumn(0).getComponent(i) * getDeterminant(getMinor(matrix, i));
+            determinant += Math.pow(-1, i) * matrix.getColumn(0).getComponent(i) * getDeterminant(getMinor(matrix, i));
         }
 
         return determinant;
@@ -184,27 +184,27 @@ public class Matrix {
         return result.toString();
     }
 
-    public Vector getDotVector(Vector vector) {
-        if (vector.getSize() != getRowsCount()) {
-            throw new IllegalArgumentException("Размерности матрицы и вектора не совпадают!");
+    public Vector multiplyByVector(Vector vector) {
+        if (vector.getSize() != getColumnsCount()) {
+            throw new IllegalArgumentException("Размерности матрицы " + getColumnsCount() + " и вектора " + vector.getSize() + " не совпадают!");
         }
 
-        Vector result = new Vector(getColumnsCount());
+        Vector result = new Vector(getRowsCount());
 
-        for (int i = 0; i < getColumnsCount(); i++) {
-            result.setComponent(i, Vector.getDotProduct(vector, getColumn(i)));
+        for (int i = 0; i < getRowsCount(); i++) {
+            result.setComponent(i, Vector.getDotProduct(vector, rows[i]));
         }
 
         return result;
     }
 
-    private void dimensionCheck(Matrix matrix){
-        if (matrix.getRowsCount() != this.getRowsCount()) {
-            throw new IllegalArgumentException("Размерность строк матрицы "+matrix.getRowsCount()+" не совпадают с исходной "+this.getRowsCount());
+    private void dimensionCheck(Matrix matrix) {
+        if (matrix.getRowsCount() != getRowsCount()) {
+            throw new IllegalArgumentException("Размерность строк матрицы " + matrix.getRowsCount() + " не совпадают с исходной " + getRowsCount());
         }
 
-        if (matrix.getColumnsCount() != this.getColumnsCount()) {
-            throw new IllegalArgumentException("Размерность строк матрицы "+matrix.getColumnsCount()+" не совпадают с исходной "+this.getColumnsCount());
+        if (matrix.getColumnsCount() != getColumnsCount()) {
+            throw new IllegalArgumentException("Размерность строк матрицы " + matrix.getColumnsCount() + " не совпадают с исходной " + getColumnsCount());
         }
     }
 
@@ -212,7 +212,7 @@ public class Matrix {
         dimensionCheck(matrix);
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            this.setRow(i, Vector.getSum(this.getRow(i), matrix.getRow(i)));
+            setRow(i, Vector.getSum(rows[i], matrix.getRow(i)));
         }
     }
 
@@ -220,11 +220,11 @@ public class Matrix {
         dimensionCheck(matrix);
 
         for (int i = 0; i < matrix.getRowsCount(); i++) {
-            this.setRow(i, Vector.getDifference(this.getRow(i), matrix.getRow(i)));
+            setRow(i, Vector.getDifference(rows[i], matrix.rows[i]));
         }
     }
 
-    public static Matrix getAdd(Matrix matrix1, Matrix matrix2) {
+    public static Matrix add(Matrix matrix1, Matrix matrix2) {
         matrix1.dimensionCheck(matrix2);
         Matrix result = new Matrix(matrix1);
         result.add(matrix2);
@@ -232,7 +232,7 @@ public class Matrix {
         return result;
     }
 
-    public static Matrix getSubtract(Matrix matrix1, Matrix matrix2) {
+    public static Matrix subtract(Matrix matrix1, Matrix matrix2) {
         matrix1.dimensionCheck(matrix2);
         Matrix result = new Matrix(matrix1);
         result.subtract(matrix2);
@@ -240,19 +240,17 @@ public class Matrix {
         return result;
     }
 
-    public static Matrix getDot(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.getColumnsCount() != matrix2.getRowsCount()) {
-            throw new IllegalArgumentException("Размерности матриц не совпадают!");
-        }
+    public static Matrix getDotProduct(Matrix matrix1, Matrix matrix2) {
+        matrix1.dimensionCheck(matrix2);
 
-        double[][] result = new double[matrix1.getRowsCount()][matrix2.getColumnsCount()];
+        double[][] array = new double[matrix1.getRowsCount()][matrix2.getColumnsCount()];
 
         for (int i = 0; i < matrix1.getRowsCount(); i++) {
             for (int j = 0; j < matrix2.getColumnsCount(); j++) {
-                result[i][j] = Vector.getDotProduct(matrix1.getRow(i), matrix2.getColumn(j));
+                array[i][j] = Vector.getDotProduct(matrix1.rows[i], matrix2.getColumn(j));
             }
         }
 
-        return new Matrix(result);
+        return new Matrix(array);
     }
 }

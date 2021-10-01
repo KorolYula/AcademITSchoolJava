@@ -39,19 +39,22 @@ public class Main {
         double[][] array2 = {{1, 2,3}, {2,2,3}};
         Matrix matrix7 = new Matrix(array2);
         System.out.println(matrix7);
+System.out.println(matrix7.getColumnsCount());
+        System.out.println(matrix6.getColumnsCount());
 
-        System.out.println(Matrix.getDot(matrix6,matrix7));
-        System.out.println(Matrix.getAdd(matrix1,matrix7));
-        System.out.println(matrix1.getTransposed());
+        System.out.println(Matrix.getDotProduct(matrix6,matrix7));
+        System.out.println(Matrix.add(matrix1,matrix7));
+        matrix1.getTransposed();
+        System.out.println(matrix1);
 
         double[][] array3 = {{1, 2,3,4}, {2,2,3,4},{4,2,4,1},{7,0,4,1}};
         Matrix matrix8 = new Matrix(array3);
         System.out.println(matrix8);
-        System.out.println(Matrix.getSubtract(matrix2,matrix3));
+        System.out.println(Matrix.subtract(matrix2,matrix3));
         System.out.println(Matrix.getDeterminant(matrix8));
         System.out.println(matrix6);
         System.out.println(v);
-        System.out.println(matrix6.getDotVector(v));
+        System.out.println(matrix6.multiplyByVector(v));
     }
 }
 

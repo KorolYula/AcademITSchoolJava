@@ -23,13 +23,13 @@ public class Main {
         matrix3.add(matrix2);
         System.out.println(matrix3);
 
-        matrix4.scale(3.0);
+        matrix4.multiply(3.0);
         System.out.println(matrix4);
 
-        Vector v = matrix4.getRowVector(1);
+        Vector v = matrix4.getRow(1);
         System.out.println(v);
 
-        matrix1.setRowVector(1, v);
+        matrix1.setRow(1, v);
         System.out.println(matrix1);
 
         double[][] array1 = {{1, 2}, {2,2}, {3, 4}};

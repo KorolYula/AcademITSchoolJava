@@ -9,6 +9,7 @@ public class Matrix {
         if (rowsCount <= 0) {
             throw new IllegalArgumentException("Количество строк в матрицы " + rowsCount + " должно быть > 0");
         }
+
         if (columnsCount <= 0) {
             throw new IllegalArgumentException("Количество столбцом в матрицы " + columnsCount + " должно быть > 0");
         }
@@ -76,6 +77,7 @@ public class Matrix {
         if (index < 0) {
             throw new ArrayIndexOutOfBoundsException("Индекс " + index + "должен быть >0 ");
         }
+
         if (isRow) {
             if (index >= getRowsCount()) {
                 throw new ArrayIndexOutOfBoundsException("Индекс " + index + " больше размерности матрицы:" + getRowsCount());
@@ -83,7 +85,6 @@ public class Matrix {
         } else if (index >= getColumnsCount()) {
             throw new ArrayIndexOutOfBoundsException("Индекс " + index + " больше размерности матрицы:" + getColumnsCount());
         }
-
     }
 
     public Vector getRow(int rowNumber) {
@@ -122,7 +123,7 @@ public class Matrix {
 
         for (int i = 0; i < getColumnsCount(); i++) {
             vectors[i] = getColumn(i);
-            }
+        }
 
         rows = vectors;
     }
@@ -147,7 +148,6 @@ public class Matrix {
         }
 
         return new Matrix(result);
-
     }
 
     public static double getDeterminant(Matrix matrix) {
@@ -241,7 +241,9 @@ public class Matrix {
     }
 
     public static Matrix getDotProduct(Matrix matrix1, Matrix matrix2) {
-        matrix1.dimensionCheck(matrix2);
+        if (matrix1.getColumnsCount() != matrix2.getRowsCount()) {
+            throw new IllegalArgumentException("Операция невыполнима: количество столбцов матрицы1= " + matrix1.getColumnsCount() + " не совпадают с количеством строк матрицы2= " + matrix2.getRowsCount());
+        }
 
         double[][] array = new double[matrix1.getRowsCount()][matrix2.getColumnsCount()];
 

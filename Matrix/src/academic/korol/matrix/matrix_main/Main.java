@@ -26,36 +26,27 @@ public class Main {
         matrix4.multiply(3.0);
         System.out.println(matrix4);
 
-        Vector v = matrix4.getRow(1);
-        System.out.println(v);
+        Vector vector = matrix4.getRow(1);
+        System.out.println(vector);
 
-        matrix1.setRow(1, v);
+        matrix1.setRow(1, vector);
         System.out.println(matrix1);
 
-        double[][] array1 = {{1, 2}, {2,2}, {3, 4}};
+        double[][] array1 = {{1, 2}, {2, 2}, {3, 4}};
         Matrix matrix6 = new Matrix(array1);
         System.out.println(matrix6);
 
-        double[][] array2 = {{1, 2,3}, {2,2,3}};
+        double[][] array2 = {{1, 2, 3}, {2, 2, 3}};
         Matrix matrix7 = new Matrix(array2);
         System.out.println(matrix7);
-System.out.println(matrix7.getColumnsCount());
+        System.out.println(matrix7.getColumnsCount());
         System.out.println(matrix6.getColumnsCount());
+        System.out.println(Matrix.getDotProduct(matrix6, matrix7));
 
-        System.out.println(Matrix.getDotProduct(matrix6,matrix7));
-        System.out.println(Matrix.add(matrix1,matrix7));
-        matrix1.getTransposed();
+        System.out.println(Matrix.add(matrix1, matrix7));
         System.out.println(matrix1);
 
-        double[][] array3 = {{1, 2,3,4}, {2,2,3,4},{4,2,4,1},{7,0,4,1}};
-        Matrix matrix8 = new Matrix(array3);
-        System.out.println(matrix8);
-        System.out.println(Matrix.subtract(matrix2,matrix3));
-        System.out.println(Matrix.getDeterminant(matrix8));
-        System.out.println(matrix6);
-        System.out.println(v);
-        System.out.println(matrix6.multiplyByVector(v));
+        matrix1.getTransposed();
+        System.out.println(matrix1);
     }
 }
-
-

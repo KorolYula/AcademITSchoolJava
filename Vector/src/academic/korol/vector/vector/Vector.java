@@ -26,7 +26,7 @@ public class Vector {
             throw new IllegalArgumentException("Размерность вектора должна быть > 0, а сейчас " + size);
         }
 
-        components = Arrays.copyOf(vector.components, vector.components.length);
+        components = Arrays.copyOf(vector.components, Math.max(size,vector.components.length));
     }
 
     public Vector(double[] array) {

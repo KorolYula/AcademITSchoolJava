@@ -17,7 +17,7 @@ public class MainWindow implements TemperatureView {
     public void start() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Перевод температур");
-            frame.setSize(640, 200);
+            frame.setSize(640, 170);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -32,10 +32,10 @@ public class MainWindow implements TemperatureView {
                     "шкала Фаренгейта",
                     "шкала Кельвина"};
 
-            JLabel choiseInputScale = new JLabel("Шкала вводы температура :");
+            JLabel choiceInputScale = new JLabel("Шкала вводы температура :");
             JComboBox<String> inputScale = new JComboBox<>(temperatureScales);
 
-            JLabel choiseOutputScale = new JLabel("Шкала вывода температуры:");
+            JLabel choiceOutputScale = new JLabel("Шкала вывода температуры:");
             JComboBox<String> outputScale = new JComboBox<>(temperatureScales);
 
             JButton convertTemperatureButton = new JButton("Перевести температуру");
@@ -50,12 +50,12 @@ public class MainWindow implements TemperatureView {
 
             hGroup.addGroup(layout.createParallelGroup()
                     .addComponent(temperatureLabel)
-                    .addComponent(choiseInputScale)
+                    .addComponent(choiceInputScale)
                     .addComponent(inputScale)
                     .addComponent(outputTemperatureLabel));
             hGroup.addGroup(layout.createParallelGroup()
                     .addComponent(temperatureTextField)
-                    .addComponent(choiseOutputScale)
+                    .addComponent(choiceOutputScale)
                     .addComponent(outputScale));
             hGroup.addComponent(convertTemperatureButton);
 
@@ -65,12 +65,11 @@ public class MainWindow implements TemperatureView {
                     .addComponent(temperatureLabel)
                     .addComponent(temperatureTextField));
             vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(choiseInputScale)
-                    .addComponent(choiseOutputScale));
+                    .addComponent(choiceInputScale)
+                    .addComponent(choiceOutputScale));
             vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(inputScale)
-                    .addComponent(outputScale));
-            vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(outputScale)
                     .addComponent(convertTemperatureButton));
             vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(outputTemperatureLabel));
@@ -84,7 +83,7 @@ public class MainWindow implements TemperatureView {
                     controller.convertTemperature(inputIndex, outputIndex, temperature);
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Ошибка ввода данных", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Ошибка ввода данных", "Ошибка!", JOptionPane.ERROR_MESSAGE);
                 }
             });
             frame.add(panel);
@@ -93,7 +92,7 @@ public class MainWindow implements TemperatureView {
     }
 
     @Override
-    public void temperatureChanded(double outputTemperature) {
+    public void temperatureChanged(double outputTemperature) {
         outputTemperatureLabel.setText(String.format("Температура после перевода:  %.2f", outputTemperature));
     }
 }

@@ -1,11 +1,11 @@
 package academic.korol.temperature;
 
-import modal.TemperatureModelImp;
+import model.TemperatureModelImpl;
 import view.MainWindow;
 
 public class Main {
     public static void main(String[] args) {
-        TemperatureModel model = new TemperatureModelImp();
+        TemperatureModel model = new TemperatureModelImpl();
         TemperatureController controller = new TemperatureController(model);
         TemperatureView mainWindow = new MainWindow(controller);
         model.addTemperatureModelLisrener(mainWindow);

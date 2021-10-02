@@ -1,5 +1,5 @@
 package academic.korol.temperature;
 
 public interface TemperatureModelListener {
-    void temperatureChanded(double fahrenheitTemperature);
+    void temperatureChanged(double fahrenheitTemperature);
 }

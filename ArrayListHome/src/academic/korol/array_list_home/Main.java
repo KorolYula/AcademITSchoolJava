@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 public class Main {
-    public static ArrayList<String> readStringsArrayFromFile(String fileName) throws IOException {
+    public static ArrayList<String> readStringsListFromFile(String fileName) throws IOException {
         ArrayList<String> fileStrings = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -14,16 +14,18 @@ public class Main {
             while ((string = reader.readLine()) != null) {
                 fileStrings.add(string);
             }
-        }
 
+        }
         return fileStrings;
     }
 
     public static void main(String[] args) {
         try {
-            System.out.println(readStringsArrayFromFile("input.txt"));
+            System.out.println(readStringsListFromFile("input.txt"));
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл не найден");
         } catch (IOException e) {
-            System.out.println("Ошибка при чтении фаила"+e.getMessage());
+            System.out.println("Ошибка при чтении файла " + e.getMessage());
         }
 
         ArrayList<Integer> numbers1 = new ArrayList<>(Arrays.asList(1, 5, 2, 4, 3, 3, 8, 12, 12, 13));
@@ -34,6 +36,7 @@ public class Main {
                 numbers1.remove(i);
                 i--;
             }
+
         }
 
         System.out.println(numbers1);
@@ -45,6 +48,7 @@ public class Main {
             if (!uniqueNumbers.contains(e)) {
                 uniqueNumbers.add(e);
             }
+
         }
 
         System.out.println(numbers2);

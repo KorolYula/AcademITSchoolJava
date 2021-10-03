@@ -3,7 +3,6 @@ package academic.korol.temperature;
 import java.util.ArrayList;
 
 public class TemperatureScale {
-   // private int temperatureScalesCount;
     private String[] temperatureScalesNames;
     private ArrayList<double[]> conversionToCelsiusFactors;
     private ArrayList<double[]> conversionFromCelsiusFactors;

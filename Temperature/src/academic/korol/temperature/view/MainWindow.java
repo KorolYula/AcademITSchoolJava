@@ -6,7 +6,7 @@ import academic.korol.temperature.TemperatureView;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainWindow implements TemperatureView{
+public class MainWindow implements TemperatureView {
     private JFrame frame;
     private final TemperatureController controller;
     private JLabel outputTemperatureLabel;
@@ -14,14 +14,14 @@ public class MainWindow implements TemperatureView{
 
     public MainWindow(TemperatureController controller, String[] temperatureScales) {
         this.controller = controller;
-        this.temperatureScales=temperatureScales;
+        this.temperatureScales = temperatureScales;
     }
 
     public void start() {
         SwingUtilities.invokeLater(() -> {
             frame = new JFrame("Перевод температур");
             frame.setSize(800, 170);
-            frame.setMinimumSize(new Dimension(800,170));
+            frame.setMinimumSize(new Dimension(800, 170));//не работает(
             //frame.setResizable(false);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

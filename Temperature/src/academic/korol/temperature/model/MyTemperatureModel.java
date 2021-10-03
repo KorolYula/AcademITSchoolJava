@@ -5,7 +5,6 @@ import academic.korol.temperature.TemperatureModelListener;
 import academic.korol.temperature.TemperatureScale;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MyTemperatureModel implements TemperatureModel {
@@ -20,9 +19,9 @@ public class MyTemperatureModel implements TemperatureModel {
     }
 
     public void convertTemperature(int inputIndex, int outputIndex, double temperature) {
-       inputTemperature = temperature;
-        celsiusTemperature =  temperatureScale.getConversionToCelsiusFactors().get(inputIndex)[0] *inputTemperature + temperatureScale.getConversionToCelsiusFactors().get(inputIndex)[1];
-        outputTemperature =temperatureScale.getConversionFromCelsiusFactors().get(outputIndex)[0] * celsiusTemperature + temperatureScale.getConversionFromCelsiusFactors().get(outputIndex)[1];
+        inputTemperature = temperature;
+        celsiusTemperature = temperatureScale.getConversionToCelsiusFactors().get(inputIndex)[0] * inputTemperature + temperatureScale.getConversionToCelsiusFactors().get(inputIndex)[1];
+        outputTemperature = temperatureScale.getConversionFromCelsiusFactors().get(outputIndex)[0] * celsiusTemperature + temperatureScale.getConversionFromCelsiusFactors().get(outputIndex)[1];
 
         for (TemperatureModelListener listener : listeners) {
             listener.temperatureChanged(outputTemperature);

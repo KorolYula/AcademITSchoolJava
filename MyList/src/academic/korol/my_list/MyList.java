@@ -40,10 +40,11 @@ public class MyList<T> {
         if (index > maxPossibleIndex) {
             throw new IndexOutOfBoundsException("Индекс " + index + "  должен быть <= " + maxPossibleIndex);
         }
+
     }
 
     private ListNode<T> getNode(int index) {
-        checkIndex(index, length + 1);
+        checkIndex(index, length);
 
         ListNode<T> node = head;
 
@@ -63,20 +64,14 @@ public class MyList<T> {
     }
 
     public void add(int index, T data) {
-        checkIndex(index, length + 2);
+        checkIndex(index, length + 1);
 
         if (index == 0) {
             addFirst(data);
             return;
         }
 
-        ListNode<T> node = head;
-
-        for (int i = 1; i < index; i++) {
-            node = node.getNext();
-        }
-
-        node.setNext(new ListNode<>(data, node.getNext()));
+        getNode(index - 1).setNext(new ListNode<>(data, getNode(index - 1).getNext()));
         length++;
     }
 
@@ -106,7 +101,7 @@ public class MyList<T> {
         ListNode<T> previousNode = head;
 
         for (int i = 1; i < length; i++) {
-            if ((data == null && currentNode.getData() == null) || (currentNode.getData() != null && currentNode.getData().equals(data))) {
+            if ((data == null && currentNode.getData() == null) || (currentNode.getData() != null && Objects.equals(currentNode.getData(), data))) {
                 previousNode.setNext(currentNode.getNext());
                 length--;
                 return true;
@@ -120,22 +115,14 @@ public class MyList<T> {
     }
 
     public T delete(int index) {
-        checkIndex(index, length + 1);
+        checkIndex(index, length);
 
         if (index == 0) {
             return deleteFirst();
         }
 
-        ListNode<T> previousNode = head;
-        ListNode<T> currentNode = head.getNext();
-
-        for (int i = 1; i < index; i++) {
-            previousNode = currentNode;
-            currentNode = currentNode.getNext();
-        }
-
-        T deletedData = currentNode.getData();
-        previousNode.setNext(currentNode.getNext());
+        T deletedData = getNode(index).getData();
+        getNode(index - 1).setNext(getNode(index).getNext());
         length--;
         return deletedData;
     }
@@ -184,7 +171,7 @@ public class MyList<T> {
         }
 
         stringBuilder.setCharAt(stringBuilder.length() - 2, ']');
-        stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
         return stringBuilder.toString();
     }

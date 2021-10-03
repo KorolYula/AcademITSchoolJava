@@ -1,23 +1,28 @@
-package view;
+package academic.korol.temperature.view;
 
 import academic.korol.temperature.TemperatureController;
 import academic.korol.temperature.TemperatureView;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class MainWindow implements TemperatureView {
+public class MainWindow implements TemperatureView{
     private JFrame frame;
     private final TemperatureController controller;
     private JLabel outputTemperatureLabel;
+    private final String[] temperatureScales;
 
-    public MainWindow(TemperatureController controller) {
+    public MainWindow(TemperatureController controller, String[] temperatureScales) {
         this.controller = controller;
+        this.temperatureScales=temperatureScales;
     }
 
     public void start() {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Перевод температур");
-            frame.setSize(640, 170);
+            frame = new JFrame("Перевод температур");
+            frame.setSize(800, 170);
+            frame.setMinimumSize(new Dimension(800,170));
+            //frame.setResizable(false);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -26,12 +31,6 @@ public class MainWindow implements TemperatureView {
             JLabel temperatureLabel = new JLabel("Введите температуру: ");
 
             JTextField temperatureTextField = new JTextField(10);
-
-            String[] temperatureScales = {
-                    "шкала Цельсия",
-                    "шкала Фаренгейта",
-                    "шкала Кельвина"};
-
             JLabel choiceInputScale = new JLabel("Шкала вводы температура :");
             JComboBox<String> inputScale = new JComboBox<>(temperatureScales);
 

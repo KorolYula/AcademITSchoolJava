@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 public class Main {
-    public static ArrayList<String> readStringsListFromFile(String fileName) throws IOException {
+        public static ArrayList<String> readStringsListFromFile(String fileName) throws IOException {
         ArrayList<String> fileStrings = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {

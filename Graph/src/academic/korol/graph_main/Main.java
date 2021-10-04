@@ -6,21 +6,21 @@ public class Main {
 
     public static void main(String[] args) {
         int[][] graphTable = {
-                {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                {1, 0, 1, 1, 1, 1, 0, 0, 0, 0},
-                {0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
-                {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
-                {0, 1, 0, 0, 1, 0, 1, 0, 0, 0},
-                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-                {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+                {0, 0, 0, 1, 1, 0},
+                {0, 0, 0, 1, 1, 0},
+                {0, 0, 0, 1, 0, 0},
+                {0, 1, 1, 0, 0, 0},
+                {1, 1, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0},};
         Graph graph = new Graph(graphTable);
 
-        boolean[] visited = new boolean[graphTable.length];
+        System.out.println("Обход графа в ширину: ");
         graph.breadthFirstSearch();
-        // graph.getSizeByDepthFirstRecursiveSearch();
 
+        System.out.println("Обход графа в глубину с рекурсией: ");
+        graph.recursiveDepthFirstSearch();
+
+        System.out.println("Обход графа в глубину: ");
+        graph.depthFirstSearch();
     }
-    }
+}

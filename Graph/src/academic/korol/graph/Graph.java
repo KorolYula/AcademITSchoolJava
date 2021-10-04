@@ -1,15 +1,14 @@
 package academic.korol.graph;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Graph {
-
     int[][] graph;
 
     public Graph(int[][] graph) {
         this.graph = graph;
     }
-
 
     public static boolean isVisited(boolean[] visited) {
         for (boolean v : visited) {
@@ -17,32 +16,33 @@ public class Graph {
                 return false;
             }
         }
+
         return true;
     }
 
-   /* public void depthFirstRecursiveSearch(int i) {
-        System.out.println(i + 1);
+
+    public void depthFirstByRecursiveSearch(int vertexNumber, boolean[] visited) {
+        System.out.println(vertexNumber + 1);
+        visited[vertexNumber] = true;
         for (int k = 0; k < graph.length; k++) {
-            if (!visited[k]) {
-                depthFirstRecursiveSearch(k);
+            if (graph[vertexNumber][k] == 1) {
+                if (!visited[k]) {
+                    depthFirstByRecursiveSearch(k, visited);
+                }
             }
         }
     }
 
-
-    public void depthFirstRecursiveSearch() {
-
+    public void recursiveDepthFirstSearch() {
         boolean[] visited = new boolean[graph.length];
-
 
         for (int i = 0; i < graph.length; i++) {
             if (!visited[i]) {
-                depthFirstRecursiveSearch(i);
-                visited[i]=true;
+                depthFirstByRecursiveSearch(i, visited);
             }
         }
     }
-*/
+
     public void breadthFirstSearch() {//обход в ширину
         int sizeGraph = graph.length;
         boolean[] visited = new boolean[sizeGraph];
@@ -81,5 +81,42 @@ public class Graph {
         }
     }
 
+    public void depthFirstSearch() {
+        ArrayList<Integer> stack = new ArrayList<>();
+        boolean[] visited = new boolean[graph.length];
 
+        stack.add(0);
+
+        while (!stack.isEmpty()) {
+            Integer vertex = stack.remove(stack.size() - 1);
+
+            if (!visited[vertex]) {
+                visited[vertex] = true;
+                System.out.println(vertex + 1);
+                visited[vertex] = true;
+
+                for (int k = 0; k < graph.length; k++) {
+                    if (graph[vertex][k] == 1) {
+                        if (!visited[k]) {
+                            stack.add(k);
+                        }
+
+                    }
+                }
+            }
+
+            if (stack.isEmpty() && !isVisited(visited)) {
+                int l = 0;
+
+                while (l < graph.length) {
+                    if (!visited[l]) {
+                        break;
+                    }
+                    l++;
+                }
+
+                stack.add(l);
+            }
+        }
+    }
 }

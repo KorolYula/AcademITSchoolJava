@@ -5,17 +5,17 @@ import java.util.*;
 public class MyArrayList<E> implements List<E> {
     private E[] items;
     private int size;
-    private int modificationСounter;
-    private final int initialCapacity = 10;
+    private int modCount;
+    static final int defaultCapacity = 10;
 
     public MyArrayList() {
         //noinspection unchecked
-        items = (E[]) new Object[initialCapacity];
+        items = (E[]) new Object[defaultCapacity];
     }
 
     public MyArrayList(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException("Размерность списка " + capacity + " должна быть >= 0 ");
+            throw new IllegalArgumentException("Вместимость списка " + capacity + " должна быть >= 0 ");
         }
 
         //noinspection unchecked
@@ -49,11 +49,11 @@ public class MyArrayList<E> implements List<E> {
     }
 
     @Override
-    public E set(int index, E element) {
-        checkIndex(index, size);
-        E oldElement = items[index];
-        items[index] = element;
-        return oldElement;
+    public E set(int index, E item) {
+        checkIndex(index, size - 1);
+        E oldItem = items[index];
+        items[index] = item;
+        return oldItem;
     }
 
     @Override
@@ -64,11 +64,9 @@ public class MyArrayList<E> implements List<E> {
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
-
             if (!contains(o)) {
                 return false;
             }
-
         }
 
         return true;
@@ -78,7 +76,7 @@ public class MyArrayList<E> implements List<E> {
     public Iterator<E> iterator() {
         return new Iterator<>() {
             private int currentIndex = -1;
-            private final int fixModCount = modificationСounter;
+            private final int fixedModCount = modCount;
 
             @Override
             public boolean hasNext() {
@@ -88,10 +86,10 @@ public class MyArrayList<E> implements List<E> {
             @Override
             public E next() {
                 if (!hasNext()) {
-                    throw new NoSuchElementException();
+                    throw new NoSuchElementException("Пройдены все элементы списка");
                 }
 
-                if (fixModCount != modificationСounter) {
+                if (fixedModCount != modCount) {
                     throw new ConcurrentModificationException("Список был изменен!");
                 }
 
@@ -108,17 +106,15 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public <T> T[] toArray(T[] array) {
-        if (array.length >= size) {
-            System.arraycopy(items, 0, array, 0, size);
-
-            for (int i = size; i < array.length; i++) {
-                array[i] = null;
-            }
-
-            return array;
+        if (array.length < size) {
+            //noinspection unchecked
+            return (T[]) Arrays.copyOf(items, size, array.getClass());
         }
 
-        return (T[]) Arrays.copyOf(items, size, array.getClass());
+        //noinspection SuspiciousSystemArraycopy
+        System.arraycopy(items, 0, array, 0, size);
+        array[size + 1] = null;
+        return array;
     }
 
     @Override
@@ -135,27 +131,31 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        boolean isDeleted = false;
+        if (c.isEmpty()) {
+            return false;
+        }
 
-        for (E e : items) {
-            if (c.contains(e)) {
-                remove(e);
-                isDeleted = true;
+        boolean isChanged = false;
+
+        for (int i = 0; i < size; i++) {
+            if (c.contains(items[i])) {
+                remove(items[i]);
+                isChanged = true;
             }
         }
 
-        return isDeleted;
+        return isChanged;
     }
 
     @Override
-    public boolean add(E element) {
-        add(size, element);
+    public boolean add(E item) {
+        add(size, item);
         return true;
     }
 
     @Override
-    public void add(int index, E element) {
-        checkIndex(index, size + 1);
+    public void add(int index, E item) {
+        checkIndex(index, size);
 
         if (size >= items.length) {
             increaseCapacity();
@@ -163,9 +163,9 @@ public class MyArrayList<E> implements List<E> {
 
         System.arraycopy(items, index, items, index + 1, size - index);
 
-        items[index] = element;
+        items[index] = item;
         size++;
-        modificationСounter++;
+        modCount++;
     }
 
     @Override
@@ -175,15 +175,27 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> collection) {
-        checkIndex(index, size + 1);
+        try {
+            checkIndex(index, size);
 
-        ensureCapacity(size + collection.size());
-        if (index < size) {
-            System.arraycopy(items, index, items, index + collection.size(), size - index);
+            ensureCapacity(size + collection.size());
+
+            if (index < size) {
+                System.arraycopy(items, index, items, index + collection.size(), size - index);
+            }
+
+            int i = index;
+
+            for (E e : collection) {
+                items[i] = e;
+                i++;
+            }
+
+            size += collection.size();
+            modCount++;
+        } catch (Exception e) {
+            return false;
         }
-        System.arraycopy(items, index, collection, 0, collection.size());
-
-        size += collection.size();
         return true;
     }
 
@@ -191,9 +203,9 @@ public class MyArrayList<E> implements List<E> {
     public boolean retainAll(Collection<?> collection) {
         boolean isChanged = false;
 
-        for (E element : items) {
-            if (!collection.contains(element)) {
-                remove(element);
+        for (int i = 0; i < size; i++) {
+            if (!collection.contains(items[i])) {
+                remove(items[i]);
                 isChanged = true;
             }
         }
@@ -212,17 +224,17 @@ public class MyArrayList<E> implements List<E> {
         }
 
         size = 0;
-        modificationСounter++;
+        modCount++;
     }
 
     private void increaseCapacity() {
-        int newSize = (items.length != 0) ? items.length * 2 : 1;
-        items = Arrays.copyOf(items, newSize);
+        int newLength = (items.length != 0) ? items.length * 2 : 1;
+        items = Arrays.copyOf(items, newLength);
     }
 
     @Override
     public E remove(int index) {
-        checkIndex(index, size);
+        checkIndex(index, size - 1);
 
         E removedItem = items[index];
 
@@ -232,7 +244,7 @@ public class MyArrayList<E> implements List<E> {
 
         items[size - 1] = null;
         --size;
-        modificationСounter++;
+        modCount++;
         return removedItem;
     }
 
@@ -274,16 +286,19 @@ public class MyArrayList<E> implements List<E> {
         if (size == 0) {
             return "[]";
         }
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
 
-        for (int i = 0; ; i++) {
+        for (int i = 0; i < size - 2; i++) {
             stringBuilder.append(items[i]);
-            if (i == size - 1) {
-                return stringBuilder.append("]").toString();
-            }
             stringBuilder.append(", ");
         }
+
+        stringBuilder.append(items[size - 1]).append("]");
+
+        return stringBuilder.toString();
+
     }
 
     //В задании их не надо реализовывать ------------------------------------------------------------------

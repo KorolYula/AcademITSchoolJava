@@ -4,25 +4,33 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader("inputCSV.txt"))) {
-            try (PrintWriter out = new PrintWriter("outputCSV.txt")) {
-                String string;
-                String columnSeparator = ",";
-                String quotes = """;
+            //try (PrintWriter out = new PrintWriter("outputCSV.txt")) {
+            String fromFileString;
+            String columnSeparator = ",";
+            String quotes = "\"\"";
+            String s2 = "\n";
+            String[] list;
+            while ((fromFileString = reader.readLine()) != null) {
+                list = fromFileString.split(columnSeparator);
+                System.out.println("----------------");
 
-                String[] list;
-                while ((string = reader.readLine()) != null) {
-
-                    list = string.split(columnSeparator);
+                for (String s:list) {
+                    System.out.println(s);
 
                 }
 
             }
 
-            BufferedReader[] in = new BufferedReader["inputCSV.txt"];
+        }
+    }
+}
+
+          /*  BufferedReader[] in = new BufferedReader["inputCSV.txt"];
             // заполняем первыми строками из всех файлов, смотрим, если какие-то строки пустые, то файлы не берем в расчет
             for (int i = 0; i < fileAmount; i++) {
                 try {
@@ -55,6 +63,7 @@ public class Main {
                         if (stringData[error.index] == null) fileLeft--;
                     }
                 }
+
             } catch (Exception e) {
                 System.err.println("Ошибка при открытии файла " + e.getMessage());
                 System.exit(-1);
@@ -64,4 +73,4 @@ public class Main {
     }
 
 
-}
+}*/

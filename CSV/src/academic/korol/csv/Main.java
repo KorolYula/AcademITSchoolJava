@@ -9,68 +9,32 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader("inputCSV.txt"))) {
-            //try (PrintWriter out = new PrintWriter("outputCSV.txt")) {
-            String fromFileString;
-            String columnSeparator = ",";
-            String quotes = "\"\"";
-            String s2 = "\n";
-            String[] list;
-            while ((fromFileString = reader.readLine()) != null) {
-                list = fromFileString.split(columnSeparator);
-                System.out.println("----------------");
+            try (PrintWriter out = new PrintWriter("output.html")) {
+                out.println("<table  border=\"1\">");
+                        out.println(" <caption>Таблица перевода CSV файла в  HTML</caption> ");
+                // Почему двойной ободок?
+                String fromFileString;
+                String columnSeparator = ",";
+                String quotes = "\"\"";
+                String s2 = "\n";
+                String[] list;
+                while ((fromFileString = reader.readLine()) != null) {
+                    list = fromFileString.split(columnSeparator);
 
-                for (String s:list) {
-                    System.out.println(s);
-
+                    out.println(" <tr>");
+                    for (String s : list) {
+                        out.println(" <td>"+s+"</td>");
+                       // out.println(s);
+                       // out.println(" </td>");
+                    }
+                    out.println(" </tr><br/>");
                 }
-
+            } catch (Exception e) {
+                System.err.println("Ошибка при открытии файла " + e.getMessage());
             }
-
         }
     }
 }
 
-          /*  BufferedReader[] in = new BufferedReader["inputCSV.txt"];
-            // заполняем первыми строками из всех файлов, смотрим, если какие-то строки пустые, то файлы не берем в расчет
-            for (int i = 0; i < fileAmount; i++) {
-                try {
-                    in[i] = new BufferedReader(new FileReader(fileNames[i]));
-                    stringData[i] = readFile(in, i, isString, fileNames);
-                    if (stringData[i] == null) {
-                        continue;
-                    }
-                    fileLeft++;
-                } catch (IOException ex1) {
-                    System.err.println("Не найден файл " + fileNames[i]);
-                    stringData[i] = null;
-                }
-            }
-
-            String prev = null;
-
-            try (PrintWriter out = new PrintWriter(outFileName)) {
-
-                while (fileLeft > 0) {
-                    try {
-                        int index = getIndex(stringData, isSortAscending, isString, prev);
-                        out.println(stringData[index]);
-                        prev = stringData[index];
-                        stringData[index] = readFile(in, index, isString, fileNames);
-                        if (stringData[index] == null) fileLeft--;
-                    } catch (WrongInputException error) {
-                        System.err.println("Неотсортированное входное значение \"" + stringData[error.index] + "\" в фаиле " + fileNames[error.index]);
-                        stringData[error.index] = readFile(in, error.index, isString, fileNames);
-                        if (stringData[error.index] == null) fileLeft--;
-                    }
-                }
-
-            } catch (Exception e) {
-                System.err.println("Ошибка при открытии файла " + e.getMessage());
-                System.exit(-1);
-            }
-
-        }
-    }
 
 
-}*/

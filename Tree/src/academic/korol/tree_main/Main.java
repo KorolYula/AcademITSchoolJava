@@ -19,7 +19,7 @@ public class Main {
         System.out.println();
 
         tree.depthFirstSearch(System.out::println);
-        tree.removeRoot();
+
         System.out.println("Размер дерева" + tree.getSize());
         System.out.println("Обход в глубину без рекурсии");
         tree.depthFirstSearch(System.out::println);
@@ -28,6 +28,6 @@ public class Main {
         tree.breadthFirstSearch(System.out::println);
         System.out.println("Обход в глубину с рекурсией");
 
-        tree.getSizeByDepthFirstRecursiveSearch(System.out::println);
+        tree.depthFirstRecursiveSearch(System.out::println);
     }
 }

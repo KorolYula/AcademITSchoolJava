@@ -24,8 +24,8 @@ public class Main {
                     out.println(" <tr>");
                     for (String s : list) {
                         out.println(" <td>"+s+"</td>");
-                       // out.println(s);
-                       // out.println(" </td>");
+                       //
+                        // out.println(" </td>");
                     }
                     out.println(" </tr><br/>");
                 }

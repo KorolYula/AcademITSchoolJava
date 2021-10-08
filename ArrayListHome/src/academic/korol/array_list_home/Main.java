@@ -20,9 +20,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        String fileName = "input.txt";
         try {
-            System.out.println("Данные из файла input.txt: ");
-            System.out.println(getStringsListFromFile("input.txt"));
+            ArrayList<String> strings=getStringsListFromFile(fileName);
+            System.out.println("Данные из файла " + fileName);
+            System.out.println(strings);
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден");
         } catch (IOException e) {
@@ -39,7 +41,7 @@ public class Main {
             }
         }
 
-        System.out.println("Подсписок нечетных целых чисел из списка №1: " + numbers1);
+        System.out.println("Список №1 после удаления четных чисел: " + numbers1);
 
         ArrayList<Integer> numbers2 = new ArrayList<>(Arrays.asList(1, 5, 2, 4, 3, 5, 2, 12, 12, 13));
         ArrayList<Integer> uniqueNumbers = new ArrayList<>(numbers2.size());
@@ -51,6 +53,6 @@ public class Main {
         }
 
         System.out.println("Список №2 целых чисел: " + numbers2);
-        System.out.println("Подсписок уникальных целых чисел из списка №2: " + uniqueNumbers);
+        System.out.println("Список №2 после удаления неуникальных чисел: " + uniqueNumbers);
     }
 }

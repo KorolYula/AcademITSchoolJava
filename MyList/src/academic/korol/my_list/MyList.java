@@ -44,7 +44,7 @@ public class MyList<T> {
     }
 
     private ListNode<T> getNode(int index) {
-        checkIndex(index, length);
+        checkIndex(index, length - 1);
 
         ListNode<T> node = head;
 
@@ -64,14 +64,14 @@ public class MyList<T> {
     }
 
     public void add(int index, T data) {
-        checkIndex(index, length + 1);
+        checkIndex(index, length);
 
         if (index == 0) {
             addFirst(data);
             return;
         }
-
-        getNode(index - 1).setNext(new ListNode<>(data, getNode(index - 1).getNext()));
+        ListNode<T> node = getNode(index - 1);
+        node.setNext(new ListNode<>(data, node.getNext()));
         length++;
     }
 
@@ -101,7 +101,7 @@ public class MyList<T> {
         ListNode<T> previousNode = head;
 
         for (int i = 1; i < length; i++) {
-            if ((data == null && currentNode.getData() == null) || (currentNode.getData() != null && Objects.equals(currentNode.getData(), data))) {
+            if (Objects.equals(currentNode.getData(), data)) {
                 previousNode.setNext(currentNode.getNext());
                 length--;
                 return true;
@@ -115,7 +115,7 @@ public class MyList<T> {
     }
 
     public T delete(int index) {
-        checkIndex(index, length);
+        checkIndex(index, length - 1);
 
         if (index == 0) {
             return deleteFirst();

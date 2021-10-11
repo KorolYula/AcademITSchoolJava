@@ -1,7 +1,7 @@
-package academic.korol.temperature;
+package academic.korol.temperature.model;
 
 public interface TemperatureModel {
-    void addTemperatureModelLisrener(TemperatureModelListener listener);
+    void addTemperatureModelListener(TemperatureModelListener listener);
 
     void convertTemperature(int inputIndex, int outputIndex, double temperature);
 }

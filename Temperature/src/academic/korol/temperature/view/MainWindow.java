@@ -1,7 +1,6 @@
 package academic.korol.temperature.view;
 
-import academic.korol.temperature.TemperatureController;
-import academic.korol.temperature.TemperatureView;
+import academic.korol.temperature.controller.TemperatureController;
 
 import javax.swing.*;
 import java.awt.*;

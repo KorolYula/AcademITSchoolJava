@@ -1,4 +1,6 @@
-package academic.korol.temperature;
+package academic.korol.temperature.controller;
+
+import academic.korol.temperature.model.TemperatureModel;
 
 public class MyTemperatureController implements TemperatureController {
     private final TemperatureModel model;

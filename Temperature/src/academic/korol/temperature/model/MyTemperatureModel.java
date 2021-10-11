@@ -1,9 +1,5 @@
 package academic.korol.temperature.model;
 
-import academic.korol.temperature.TemperatureModel;
-import academic.korol.temperature.TemperatureModelListener;
-import academic.korol.temperature.TemperatureScale;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +8,16 @@ public class MyTemperatureModel implements TemperatureModel {
     public double celsiusTemperature;
     public double outputTemperature;
     private final List<TemperatureModelListener> listeners = new ArrayList<>();
-    private TemperatureScale temperatureScale;
+    private final ArrayList<TemperatureScale> temperatureScales;
 
-    public MyTemperatureModel(TemperatureScale temperatureScale) {
-        this.temperatureScale = temperatureScale;
+    public MyTemperatureModel(ArrayList<TemperatureScale> temperatureScale) {
+        this.temperatureScales = temperatureScale;
     }
 
     public void convertTemperature(int inputIndex, int outputIndex, double temperature) {
         inputTemperature = temperature;
-        celsiusTemperature = temperatureScale.getConversionToCelsiusFactors().get(inputIndex)[0] * inputTemperature + temperatureScale.getConversionToCelsiusFactors().get(inputIndex)[1];
-        outputTemperature = temperatureScale.getConversionFromCelsiusFactors().get(outputIndex)[0] * celsiusTemperature + temperatureScale.getConversionFromCelsiusFactors().get(outputIndex)[1];
+        celsiusTemperature = temperatureScales.get(inputIndex).getConversionToCelsiusFactors()[0] * inputTemperature + temperatureScales.get(inputIndex).getConversionToCelsiusFactors()[1];
+        outputTemperature = temperatureScales.get(outputIndex).getConversionFromCelsiusFactors()[0] * celsiusTemperature + temperatureScales.get(outputIndex).getConversionFromCelsiusFactors()[1];
 
         for (TemperatureModelListener listener : listeners) {
             listener.temperatureChanged(outputTemperature);
@@ -29,7 +25,7 @@ public class MyTemperatureModel implements TemperatureModel {
     }
 
     @Override
-    public void addTemperatureModelLisrener(TemperatureModelListener listener) {
+    public void addTemperatureModelListener(TemperatureModelListener listener) {
         listeners.add(listener);
     }
 }

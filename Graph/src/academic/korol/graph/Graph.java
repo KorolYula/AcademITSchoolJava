@@ -2,89 +2,100 @@ package academic.korol.graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
+import java.util.function.Consumer;
 
-public class Graph {
-    int[][] graph;
+public class Graph<V> {
+    private final int[][] graph;
+    private final ArrayList<V> vertices;
 
-    public Graph(int[][] graph) {
+    public Graph(int[][] graph, ArrayList<V> vertices) {
+        if (graph.length == 0) {
+            throw new IllegalArgumentException("Количество вершин  в графе должно быть > 0");
+        }
+
+        if (graph.length != graph[0].length) {
+            throw new IllegalArgumentException("Матрица для определения графа должна быть квадратной");
+        }
+
+        for (int i = 0; i < graph.length - 1; i++) {
+            if (graph[i].length != graph[i + 1].length) {
+                throw new IllegalArgumentException("Матрица для определения графа должна быть квадратной");
+            }
+        }
+
         this.graph = graph;
+        this.vertices = vertices;
     }
 
-    public static boolean isVisited(boolean[] visited) {
+    public static boolean notVisited(boolean[] visited) {
         for (boolean v : visited) {
             if (!v) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
-
-    public void depthFirstByRecursiveSearch(int vertexNumber, boolean[] visited) {
-        System.out.println(vertexNumber + 1);
+    private void depthFirstByRecursiveSearch(int vertexNumber, boolean[] visited, Consumer<V> consumer) {
+        consumer.accept(vertices.get(vertexNumber));
         visited[vertexNumber] = true;
-        for (int k = 0; k < graph.length; k++) {
-            if (graph[vertexNumber][k] == 1) {
-                if (!visited[k]) {
-                    depthFirstByRecursiveSearch(k, visited);
-                }
+
+        for (int i = 0; i < graph.length; i++) {
+            if (graph[vertexNumber][i] == 1 && !visited[i]) {
+                depthFirstByRecursiveSearch(i, visited, consumer);
             }
         }
     }
 
-    public void recursiveDepthFirstSearch() {
+    //обход в глубину с рекурсией
+    public void recursiveDepthFirstSearch(Consumer<V> consumer) {
         boolean[] visited = new boolean[graph.length];
 
         for (int i = 0; i < graph.length; i++) {
             if (!visited[i]) {
-                depthFirstByRecursiveSearch(i, visited);
+                depthFirstByRecursiveSearch(i, visited, consumer);
             }
         }
     }
 
-    public void breadthFirstSearch() {//обход в ширину
+    //обход в ширину
+    public void breadthFirstSearch(Consumer<V> consumer) {
         int sizeGraph = graph.length;
         boolean[] visited = new boolean[sizeGraph];
-        LinkedList<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
 
-        queue.addFirst(0);
-
-        while (!isVisited(visited)) {
+        while (notVisited(visited)) {
             Integer vertex = queue.remove();
 
             if (!visited[vertex]) {
-                System.out.println(vertex + 1);
+                consumer.accept(vertices.get(vertex));
                 visited[vertex] = true;
 
-                for (int k = 0; k < sizeGraph; k++) {
-                    if (graph[vertex][k] == 1) {
-                        if (!visited[k]) {
-                            queue.add(k);
-                        }
+                for (int i = 0; i < graph.length; i++) {
+                    if (graph[vertex][i] == 1 && !visited[i]) {
+                        queue.add(i);
                     }
                 }
             }
 
-            if (queue.isEmpty() && !isVisited(visited)) {
-                int l = 0;
-
-                while (l < sizeGraph) {
-                    if (!visited[l]) {
+            if (queue.isEmpty() && notVisited(visited)) {
+                for (int i = 0; i < graph.length; i++) {
+                    if (!visited[i]) {
+                        queue.add(i);
                         break;
                     }
-                    l++;
                 }
-
-                queue.add(l);
             }
         }
     }
 
-    public void depthFirstSearch() {
+    //обход в глубину
+    public void depthFirstSearch(Consumer<V> consumer) {
         ArrayList<Integer> stack = new ArrayList<>();
         boolean[] visited = new boolean[graph.length];
-
         stack.add(0);
 
         while (!stack.isEmpty()) {
@@ -92,30 +103,22 @@ public class Graph {
 
             if (!visited[vertex]) {
                 visited[vertex] = true;
-                System.out.println(vertex + 1);
-                visited[vertex] = true;
+                consumer.accept(vertices.get(vertex));
 
-                for (int k = 0; k < graph.length; k++) {
-                    if (graph[vertex][k] == 1) {
-                        if (!visited[k]) {
-                            stack.add(k);
-                        }
-
+                for (int i = graph.length - 1; i > 0; i--) {
+                    if (graph[vertex][i] == 1 && !visited[i]) {
+                        stack.add(i);
                     }
                 }
             }
 
-            if (stack.isEmpty() && !isVisited(visited)) {
-                int l = 0;
-
-                while (l < graph.length) {
-                    if (!visited[l]) {
+            if (stack.isEmpty() && notVisited(visited)) {
+                for (int i = 0; i < graph.length; i++) {
+                    if (!visited[i]) {
+                        stack.add(i);
                         break;
                     }
-                    l++;
                 }
-
-                stack.add(l);
             }
         }
     }

@@ -3,22 +3,23 @@ package academic.korol.hash_table.hash_table;
 import java.util.*;
 
 public class MyHashTable<T> implements Collection<T> {
+    private static final int DEFAULT_LENGTH = 10;
     private final LinkedList<T>[] lists;
     private int size;
-    private final int defaultLength = 10;
     private int modCount;
 
-    public MyHashTable(int listsLength) {
-        if (listsLength <= 0) {
-            throw new IllegalArgumentException("Длинна массива " + listsLength + "должна быть > 0 ");
+    public MyHashTable(int arrayLength) {
+        if (arrayLength <= 0) {
+            throw new IllegalArgumentException("Длинна массива " + arrayLength + "должна быть > 0 ");
         }
+
         //noinspection unchecked
-        lists = (LinkedList<T>[]) new LinkedList[listsLength];
+        lists = (LinkedList<T>[]) new LinkedList[arrayLength];
     }
 
     public MyHashTable() {
         //noinspection unchecked
-        lists = (LinkedList<T>[]) new LinkedList[defaultLength];
+        lists = (LinkedList<T>[]) new LinkedList[DEFAULT_LENGTH];
     }
 
     private int getIndex(Object o) {
@@ -91,7 +92,8 @@ public class MyHashTable<T> implements Collection<T> {
 
     @Override
     public boolean contains(Object o) {
-        return lists[getIndex(o)] != null && lists[getIndex(o)].contains(o);
+        int index = getIndex(o);
+        return lists[index] != null && lists[index].contains(o);
     }
 
     @Override
@@ -112,7 +114,7 @@ public class MyHashTable<T> implements Collection<T> {
     public boolean remove(Object o) {
         int index = getIndex(o);
 
-        if ((lists[index] != null && lists[index].remove(o))) {
+        if (lists[index] != null && lists[index].remove(o)) {
             size--;
             modCount++;
             return true;
@@ -134,15 +136,11 @@ public class MyHashTable<T> implements Collection<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        boolean isAdd = false;
-
         for (T element : c) {
-            if (add(element)) {
-                isAdd = true;
-            }
+            add(element);
         }
 
-        return isAdd;
+        return true;
     }
 
     @Override
@@ -153,14 +151,16 @@ public class MyHashTable<T> implements Collection<T> {
             int index = getIndex(element);
             int oldListSize = lists[index].size();
 
-            if (lists[index].removeAll(Collections.singleton(element))) {
+            if (lists[index] != null && lists[index].removeAll(Collections.singleton(element))) {
                 int newListSize = lists[index].size();
                 size += newListSize - oldListSize;
-                modCount++;
                 isRemoved = true;
             }
         }
 
+        if (isRemoved) {
+            modCount++;
+        }
         return isRemoved;
     }
 
@@ -175,10 +175,13 @@ public class MyHashTable<T> implements Collection<T> {
                 if (list.retainAll(c)) {
                     int newListSize = list.size();
                     size += newListSize - oldListSize;
-                    modCount++;
                     isRemoved = true;
                 }
             }
+        }
+
+        if (isRemoved) {
+            modCount++;
         }
 
         return isRemoved;
@@ -206,7 +209,7 @@ public class MyHashTable<T> implements Collection<T> {
 
         //noinspection SuspiciousSystemArraycopy
         System.arraycopy(toArray(), 0, array, 0, size);
-        array[size + 1] = null;
+        array[size] = null;
 
         return array;
     }
@@ -214,11 +217,11 @@ public class MyHashTable<T> implements Collection<T> {
     @Override
     public String toString() {
         if (size == 0) {
-            return null;
+            return "[]";
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-
+        stringBuilder.append("[");
         for (int i = 0; i < lists.length; i++) {
             stringBuilder.append("[");
             stringBuilder.append(i);
@@ -226,7 +229,7 @@ public class MyHashTable<T> implements Collection<T> {
             stringBuilder.append(lists[i]);
             stringBuilder.append("]");
         }
-
+        stringBuilder.append("]");
         return stringBuilder.toString();
     }
 }

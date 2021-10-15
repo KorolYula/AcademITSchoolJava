@@ -1,16 +1,17 @@
-package academic.korol.my_array_list.my_array_list;
+package academic.korol.my_array_list;
 
 import java.util.*;
 
 public class MyArrayList<E> implements List<E> {
+    private static final int DEFAULT_CAPACITY = 10;
+
     private E[] items;
     private int size;
     private int modCount;
-    static final int defaultCapacity = 10;
 
     public MyArrayList() {
         //noinspection unchecked
-        items = (E[]) new Object[defaultCapacity];
+        items = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
     public MyArrayList(int capacity) {
@@ -106,6 +107,7 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public <T> T[] toArray(T[] array) {
+
         if (array.length < size) {
             //noinspection unchecked
             return (T[]) Arrays.copyOf(items, size, array.getClass());
@@ -113,7 +115,7 @@ public class MyArrayList<E> implements List<E> {
 
         //noinspection SuspiciousSystemArraycopy
         System.arraycopy(items, 0, array, 0, size);
-        array[size + 1] = null;
+        array[size] = null;
         return array;
     }
 
@@ -130,16 +132,17 @@ public class MyArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
-        if (c.isEmpty()) {
+    public boolean removeAll(Collection<?> collection) {
+        if (collection.isEmpty()) {
             return false;
         }
 
         boolean isChanged = false;
 
         for (int i = 0; i < size; i++) {
-            if (c.contains(items[i])) {
-                remove(items[i]);
+            if (collection.contains(items[i])) {
+                //noinspection SuspiciousListRemoveInLoop
+                remove(i);
                 isChanged = true;
             }
         }
@@ -175,27 +178,25 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> collection) {
-        try {
-            checkIndex(index, size);
+       if (collection.size()==0){
+           return false;
+       }
+        checkIndex(index, size);
+        ensureCapacity(size + collection.size());
 
-            ensureCapacity(size + collection.size());
-
-            if (index < size) {
-                System.arraycopy(items, index, items, index + collection.size(), size - index);
-            }
-
-            int i = index;
-
-            for (E e : collection) {
-                items[i] = e;
-                i++;
-            }
-
-            size += collection.size();
-            modCount++;
-        } catch (Exception e) {
-            return false;
+        if (index < size) {
+            System.arraycopy(items, index, items, index + collection.size(), size - index);
         }
+
+        int i = index;
+        for (E e : collection) {
+            items[i] = e;
+            i++;
+        }
+
+        size += collection.size();
+        modCount++;
+
         return true;
     }
 
@@ -204,8 +205,8 @@ public class MyArrayList<E> implements List<E> {
         boolean isChanged = false;
 
         for (int i = 0; i < size; i++) {
-            if (!collection.contains(items[i])) {
-                remove(items[i]);
+            if (collection.contains(items[i])) {
+                remove(i);
                 isChanged = true;
             }
         }
@@ -290,15 +291,13 @@ public class MyArrayList<E> implements List<E> {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
 
-        for (int i = 0; i < size - 2; i++) {
+        for (int i = 0; i <= size - 2; i++) {
             stringBuilder.append(items[i]);
             stringBuilder.append(", ");
         }
 
         stringBuilder.append(items[size - 1]).append("]");
-
         return stringBuilder.toString();
-
     }
 
     //В задании их не надо реализовывать ------------------------------------------------------------------

@@ -11,20 +11,22 @@ public class Main {
         try (BufferedReader reader = new BufferedReader(new FileReader("inputCSV.txt"))) {
             try (PrintWriter out = new PrintWriter("output.html")) {
                 out.println("<table  border=\"1\">");
-                        out.println(" <caption>Таблица перевода CSV файла в  HTML</caption> ");
+                out.println(" <caption>Таблица перевода CSV файла в  HTML</caption> ");
                 // Почему двойной ободок?
-                String fromFileString;
-                String columnSeparator = ",";
-                String quotes = "\"\"";
-                String s2 = "\n";
-                String[] list;
-                while ((fromFileString = reader.readLine()) != null) {
-                    list = fromFileString.split(columnSeparator);
-
+                String line;
+                char columnSeparator =',';
+                char quotes = '"';
+                char s2 = '\n';
+               // String[] list;
+                while ((line = reader.readLine()) != null) {
+                    // list = fromFileString.split(columnSeparator);
+                    for (int i = 0; i < line.length(); i++) {
+                        if (line.charAt(i) == columnSeparator)
+                    }
                     out.println(" <tr>");
                     for (String s : list) {
-                        out.println(" <td>"+s+"</td>");
-                       //
+                        out.println(" <td>" + s + "</td>");
+                        //
                         // out.println(" </td>");
                     }
                     out.println(" </tr><br/>");

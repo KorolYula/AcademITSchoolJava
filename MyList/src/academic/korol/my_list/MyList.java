@@ -40,7 +40,6 @@ public class MyList<T> {
         if (index > maxPossibleIndex) {
             throw new IndexOutOfBoundsException("Индекс " + index + "  должен быть <= " + maxPossibleIndex);
         }
-
     }
 
     private ListNode<T> getNode(int index) {
@@ -70,8 +69,9 @@ public class MyList<T> {
             addFirst(data);
             return;
         }
-        ListNode<T> node = getNode(index - 1);
-        node.setNext(new ListNode<>(data, node.getNext()));
+
+        ListNode<T> previousNode = getNode(index - 1);
+        previousNode.setNext(new ListNode<>(data, previousNode.getNext()));
         length++;
     }
 
@@ -121,8 +121,9 @@ public class MyList<T> {
             return deleteFirst();
         }
 
-        T deletedData = getNode(index).getData();
-        getNode(index - 1).setNext(getNode(index).getNext());
+        ListNode<T> previousNode = getNode(index-1);
+        T deletedData = previousNode.getNext().getData();
+        previousNode.setNext(previousNode.getNext().getNext());
         length--;
         return deletedData;
     }

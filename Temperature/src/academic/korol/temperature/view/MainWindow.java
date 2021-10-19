@@ -1,19 +1,21 @@
 package academic.korol.temperature.view;
 
 import academic.korol.temperature.controller.TemperatureController;
+import academic.korol.temperature.model.TemperatureScale;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainWindow implements TemperatureView {
     private JFrame frame;
     private final TemperatureController controller;
     private JLabel outputTemperatureLabel;
-    private final String[] temperatureScales;
+    private final String[] temperatureScalesNames;
 
-    public MainWindow(TemperatureController controller, String[] temperatureScales) {
+    public MainWindow(TemperatureController controller, ArrayList<TemperatureScale> temperatureScales) {
         this.controller = controller;
-        this.temperatureScales = temperatureScales;
+        temperatureScalesNames = temperatureScales.stream().map(TemperatureScale::getName).toArray(String[]::new);
     }
 
     public void start() {
@@ -21,7 +23,6 @@ public class MainWindow implements TemperatureView {
             frame = new JFrame("Перевод температур");
             frame.setSize(800, 170);
             frame.setMinimumSize(new Dimension(800, 170));//не работает(
-            //frame.setResizable(false);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -31,10 +32,10 @@ public class MainWindow implements TemperatureView {
 
             JTextField temperatureTextField = new JTextField(10);
             JLabel choiceInputScale = new JLabel("Шкала вводы температура :");
-            JComboBox<String> inputScale = new JComboBox<>(temperatureScales);
+            JComboBox<String> inputScale = new JComboBox<>(temperatureScalesNames);
 
             JLabel choiceOutputScale = new JLabel("Шкала вывода температуры:");
-            JComboBox<String> outputScale = new JComboBox<>(temperatureScales);
+            JComboBox<String> outputScale = new JComboBox<>(temperatureScalesNames);
 
             JButton convertTemperatureButton = new JButton("Перевести температуру");
 

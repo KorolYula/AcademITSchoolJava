@@ -1,10 +1,7 @@
 package academic.korol.temperature.main;
 
 import academic.korol.temperature.model.TemperatureScale;
-import academic.korol.temperature.controller.MyTemperatureController;
-import academic.korol.temperature.controller.TemperatureController;
 import academic.korol.temperature.model.TemperatureConversionModel;
-import academic.korol.temperature.model.TemperatureModel;
 import academic.korol.temperature.view.MainWindow;
 import academic.korol.temperature.view.TemperatureView;
 
@@ -41,9 +38,8 @@ public class Main {
 
         temperatureScales.add(fahrenheitScale);
 
-        TemperatureModel model = new TemperatureConversionModel(temperatureScales);
-        TemperatureController controller = new MyTemperatureController(model);
-        TemperatureView mainWindow = new MainWindow(controller, temperatureScales);
+        TemperatureConversionModel model = new TemperatureConversionModel(temperatureScales);
+        TemperatureView mainWindow = new MainWindow(model, temperatureScales);
         model.addTemperatureModelListener(mainWindow);
         mainWindow.start();
     }

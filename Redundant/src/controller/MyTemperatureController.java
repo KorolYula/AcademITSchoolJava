@@ -1,4 +1,4 @@
-package academic.korol.temperature.controller;
+package controller;
 
 import academic.korol.temperature.model.TemperatureModel;
 

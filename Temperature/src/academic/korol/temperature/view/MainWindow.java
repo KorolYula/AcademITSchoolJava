@@ -1,6 +1,6 @@
 package academic.korol.temperature.view;
 
-import academic.korol.temperature.controller.TemperatureController;
+import academic.korol.temperature.model.TemperatureConversionModel;
 import academic.korol.temperature.model.TemperatureScale;
 
 import javax.swing.*;
@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 public class MainWindow implements TemperatureView {
     private JFrame frame;
-    private final TemperatureController controller;
+    private final TemperatureConversionModel model;
     private JLabel outputTemperatureLabel;
     private final String[] temperatureScalesNames;
 
-    public MainWindow(TemperatureController controller, ArrayList<TemperatureScale> temperatureScales) {
-        this.controller = controller;
+    public MainWindow(TemperatureConversionModel model, ArrayList<TemperatureScale> temperatureScales) {
+        this.model = model;
         temperatureScalesNames = temperatureScales.stream().map(TemperatureScale::getName).toArray(String[]::new);
     }
 
@@ -79,7 +79,7 @@ public class MainWindow implements TemperatureView {
                     double temperature = Double.parseDouble(temperatureTextField.getText());
                     int outputIndex = outputScale.getSelectedIndex();
                     int inputIndex = inputScale.getSelectedIndex();
-                    controller.convertTemperature(inputIndex, outputIndex, temperature);
+                    model.convertTemperature(inputIndex, outputIndex, temperature);
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Ошибка ввода данных", "Ошибка!", JOptionPane.ERROR_MESSAGE);

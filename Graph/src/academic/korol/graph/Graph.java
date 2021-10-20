@@ -18,6 +18,10 @@ public class Graph<V> {
             throw new IllegalArgumentException("Матрица для определения графа должна быть квадратной");
         }
 
+        if (graph.length != vertices.size()) {
+            throw new IllegalArgumentException("Размерность матрицы должна совпадать с количеством вершин в списке!");
+        }
+
         for (int i = 0; i < graph.length - 1; i++) {
             if (graph[i].length != graph[i + 1].length) {
                 throw new IllegalArgumentException("Матрица для определения графа должна быть квадратной");
@@ -81,7 +85,7 @@ public class Graph<V> {
                 }
             }
 
-            if (queue.isEmpty() && notVisited(visited)) {
+            if (queue.isEmpty()) {
                 for (int i = 0; i < graph.length; i++) {
                     if (!visited[i]) {
                         queue.add(i);
@@ -105,14 +109,14 @@ public class Graph<V> {
                 visited[vertex] = true;
                 consumer.accept(vertices.get(vertex));
 
-                for (int i = graph.length - 1; i > 0; i--) {
+                for (int i = graph.length - 1; i >= 0; i--) {
                     if (graph[vertex][i] == 1 && !visited[i]) {
                         stack.add(i);
                     }
                 }
             }
 
-            if (stack.isEmpty() && notVisited(visited)) {
+            if (stack.isEmpty()) {
                 for (int i = 0; i < graph.length; i++) {
                     if (!visited[i]) {
                         stack.add(i);

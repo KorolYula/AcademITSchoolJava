@@ -39,19 +39,21 @@ public class MyArrayList<E> implements List<E> {
         }
 
         if (index > maxIndex) {
-            throw new IndexOutOfBoundsException("Индекс " + index + "должен быть не больше" + maxIndex);
+            throw new IndexOutOfBoundsException("Индекс " + index + " должен быть не больше " + maxIndex);
         }
     }
 
     @Override
     public E get(int index) {
         checkIndex(index, size - 1);
+
         return items[index];
     }
 
     @Override
     public E set(int index, E item) {
         checkIndex(index, size - 1);
+
         E oldItem = items[index];
         items[index] = item;
         return oldItem;
@@ -63,8 +65,8 @@ public class MyArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
-        for (Object o : c) {
+    public boolean containsAll(Collection<?> collection) {
+        for (Object o : collection) {
             if (!contains(o)) {
                 return false;
             }
@@ -107,7 +109,6 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public <T> T[] toArray(T[] array) {
-
         if (array.length < size) {
             //noinspection unchecked
             return (T[]) Arrays.copyOf(items, size, array.getClass());
@@ -115,7 +116,11 @@ public class MyArrayList<E> implements List<E> {
 
         //noinspection SuspiciousSystemArraycopy
         System.arraycopy(items, 0, array, 0, size);
-        array[size] = null;
+
+        if (array.length > size) {
+            array[size] = null;
+        }
+
         return array;
     }
 
@@ -178,10 +183,12 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> collection) {
-       if (collection.size()==0){
-           return false;
-       }
         checkIndex(index, size);
+
+        if (collection.size() == 0) {
+            return false;
+        }
+
         ensureCapacity(size + collection.size());
 
         if (index < size) {
@@ -205,7 +212,7 @@ public class MyArrayList<E> implements List<E> {
         boolean isChanged = false;
 
         for (int i = 0; i < size; i++) {
-            if (collection.contains(items[i])) {
+            if (!collection.contains(items[i])) {
                 remove(i);
                 isChanged = true;
             }
@@ -220,9 +227,7 @@ public class MyArrayList<E> implements List<E> {
             return;
         }
 
-        for (int i = 0; i < size; i++) {
-            items[i] = null;
-        }
+        Arrays.fill(items, 0);
 
         size = 0;
         modCount++;
@@ -244,7 +249,7 @@ public class MyArrayList<E> implements List<E> {
         }
 
         items[size - 1] = null;
-        --size;
+        size--;
         modCount++;
         return removedItem;
     }
@@ -291,7 +296,7 @@ public class MyArrayList<E> implements List<E> {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
 
-        for (int i = 0; i <= size - 2; i++) {
+        for (int i = 0; i < size - 1; i++) {
             stringBuilder.append(items[i]);
             stringBuilder.append(", ");
         }
@@ -300,19 +305,24 @@ public class MyArrayList<E> implements List<E> {
         return stringBuilder.toString();
     }
 
+
     //В задании их не надо реализовывать ------------------------------------------------------------------
+
     @Override
     public ListIterator<E> listIterator() {
+        //noinspection ConstantConditions
         return null;
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
+        //noinspection ConstantConditions
         return null;
     }
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
+        //noinspection ConstantConditions
         return null;
     }
 }

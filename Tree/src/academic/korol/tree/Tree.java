@@ -37,26 +37,6 @@ public class Tree<T> {
         return size;
     }
 
-    private TreeNode<T> getNode(T element) {
-        TreeNode<T> currentNode = root;
-
-        while (currentNode != null) {
-            int compareResult = comparator.compare(currentNode.getData(), element);
-
-            if (compareResult == 0) {
-                return currentNode;
-            }
-
-            if (compareResult < 0) {
-                currentNode = currentNode.getLeft();
-            } else {
-                currentNode = currentNode.getRight();
-            }
-        }
-
-        return null;
-    }
-
     public void add(T element) {
         if (root == null) {
             root = new TreeNode<>(element);
@@ -68,7 +48,6 @@ public class Tree<T> {
 
         while (currentNode != null) {
             if (comparator.compare(currentNode.getData(), element) > 0) {
-
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                 } else {
@@ -77,7 +56,6 @@ public class Tree<T> {
                     currentNode.setLeft(newNode);
                     return;
                 }
-
             } else {
                 if (currentNode.getRight() != null) {
                     currentNode = currentNode.getRight();
@@ -90,7 +68,6 @@ public class Tree<T> {
             }
         }
     }
-
 
     private void removeCurrentNode(TreeNode<T> parentNode, TreeNode<T> currentNode) {
         if (currentNode.getRight() == null && currentNode.getLeft() == null) { //если лист
@@ -129,9 +106,8 @@ public class Tree<T> {
                 }
 
                 leftListParent.setLeft(leftList.getRight());
-                leftList.setLeft(currentNode.getLeft());
-                leftList.setRight(currentNode.getRight());
-                parentNode.setLeft(leftList);
+                currentNode.setData(leftList.getData());
+
             }
         }
 

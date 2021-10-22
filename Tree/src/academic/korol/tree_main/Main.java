@@ -5,7 +5,7 @@ import academic.korol.tree.Tree;
 public class Main {
     public static void main(String[] args) {
         Tree<Integer> tree = new Tree<>();
-        tree.add(18);
+        tree.add(1);
         tree.add(10);
         tree.add(4);
         tree.add(14);
@@ -16,10 +16,10 @@ public class Main {
         System.out.println();
         tree.depthFirstSearch(System.out::println);
         tree.remove(10);
-
         tree.depthFirstSearch(System.out::println);
 
         System.out.println("Размер дерева" + tree.getSize());
+
         System.out.println("Обход в глубину без рекурсии");
         tree.depthFirstSearch(System.out::println);
 

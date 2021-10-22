@@ -4,6 +4,7 @@ import java.util.*;
 
 public class MyHashTable<T> implements Collection<T> {
     private static final int DEFAULT_LENGTH = 10;
+
     private final LinkedList<T>[] lists;
     private int size;
     private int modCount;
@@ -136,11 +137,19 @@ public class MyHashTable<T> implements Collection<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        for (T element : c) {
-            add(element);
+        if (c.isEmpty()) {
+            return false;
         }
 
-        return true;
+        boolean isAdd = false;
+
+        for (T element : c) {
+            if (add(element)) {
+                isAdd = true;
+            }
+        }
+
+        return isAdd;
     }
 
     @Override
@@ -149,18 +158,21 @@ public class MyHashTable<T> implements Collection<T> {
 
         for (Object element : c) {
             int index = getIndex(element);
-            int oldListSize = lists[index].size();
 
-            if (lists[index] != null && lists[index].removeAll(Collections.singleton(element))) {
-                int newListSize = lists[index].size();
-                size += newListSize - oldListSize;
-                isRemoved = true;
+            if (lists[index] != null) {
+                int listOldSize = lists[index].size();
+
+                if (lists[index].removeAll(Collections.singleton(element))) {
+                    size += lists[index].size() - listOldSize;
+                    isRemoved = true;
+                }
             }
         }
 
         if (isRemoved) {
             modCount++;
         }
+
         return isRemoved;
     }
 
@@ -170,11 +182,10 @@ public class MyHashTable<T> implements Collection<T> {
 
         for (LinkedList<T> list : lists) {
             if (list != null) {
-                int oldListSize = list.size();
+                int listOldSize = list.size();
 
                 if (list.retainAll(c)) {
-                    int newListSize = list.size();
-                    size += newListSize - oldListSize;
+                    size += list.size() - listOldSize;
                     isRemoved = true;
                 }
             }
@@ -209,7 +220,10 @@ public class MyHashTable<T> implements Collection<T> {
 
         //noinspection SuspiciousSystemArraycopy
         System.arraycopy(toArray(), 0, array, 0, size);
-        array[size] = null;
+
+        if (array.length > size) {
+            array[size] = null;
+        }
 
         return array;
     }
@@ -222,6 +236,7 @@ public class MyHashTable<T> implements Collection<T> {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
+
         for (int i = 0; i < lists.length; i++) {
             stringBuilder.append("[");
             stringBuilder.append(i);
@@ -229,6 +244,7 @@ public class MyHashTable<T> implements Collection<T> {
             stringBuilder.append(lists[i]);
             stringBuilder.append("]");
         }
+
         stringBuilder.append("]");
         return stringBuilder.toString();
     }

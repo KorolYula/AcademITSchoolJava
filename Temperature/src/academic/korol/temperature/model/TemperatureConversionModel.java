@@ -7,7 +7,11 @@ public class TemperatureConversionModel implements TemperatureModel {
     private final List<TemperatureModelListener> listeners = new ArrayList<>();
     private final ArrayList<TemperatureScale> temperatureScales;
 
-    public TemperatureConversionModel(ArrayList<TemperatureScale> temperatureScale) {
+    public ArrayList<TemperatureScale> getTemperatureScales() {
+        return temperatureScales;
+    }
+
+      public TemperatureConversionModel(ArrayList<TemperatureScale> temperatureScale) {
         this.temperatureScales = temperatureScale;
     }
 

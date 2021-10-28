@@ -1,21 +1,22 @@
 package academic.korol.temperature.view;
 
 import academic.korol.temperature.model.TemperatureConversionModel;
+import academic.korol.temperature.model.TemperatureModel;
 import academic.korol.temperature.model.TemperatureScale;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MainWindow implements TemperatureView {
-    private JFrame frame;
+public class SwingTemperatureView implements TemperatureView {
     private final TemperatureConversionModel model;
+    private final  String[] temperatureScalesNames;
+    private JFrame frame;
     private JLabel outputTemperatureLabel;
-    private final String[] temperatureScalesNames;
 
-    public MainWindow(TemperatureConversionModel model, ArrayList<TemperatureScale> temperatureScales) {
+    public SwingTemperatureView(TemperatureConversionModel model) {
         this.model = model;
-        temperatureScalesNames = temperatureScales.stream().map(TemperatureScale::getName).toArray(String[]::new);
+        temperatureScalesNames = model.getTemperatureScales().stream().map(TemperatureScale::getName).toArray(String[]::new);
     }
 
     public void start() {
@@ -80,7 +81,6 @@ public class MainWindow implements TemperatureView {
                     int outputIndex = outputScale.getSelectedIndex();
                     int inputIndex = inputScale.getSelectedIndex();
                     model.convertTemperature(inputIndex, outputIndex, temperature);
-
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Ошибка ввода данных", "Ошибка!", JOptionPane.ERROR_MESSAGE);
                 }
